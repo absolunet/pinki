@@ -1,0 +1,30 @@
+{
+  "name": "@absolunet/pinki",
+  "version": "0.0.1",
+  "description": "Asynchronous libraries wrapper",
+  "definition": "pinki promises",
+  "homepage": "https://github.com/absolunet/pinki",
+  "author": {
+    "name": "Absolunet",
+    "url": "https://absolunet.com/"
+  },
+  "license": "MIT",
+  "repository": {
+    "url": "git://github.com/absolunet/pinki.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/absolunet/pinki/issues"
+  },
+  "scripts": {
+    "test": "ava"
+  },
+  "devDependencies": {
+    "@absolunet/eslint-config-nwayo": "0.3.0",
+    "@absolunet/tester": "1.4.0"
+  },
+  "dependencies": {
+    "pubsub-js": "^1.6.0",
+    "rsvp": "^4.8.2"
+  }
+}

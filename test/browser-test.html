@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+	<script src="../bower_components/pubsub-js/src/pubsub.js"></script>
+	<script src="../vendor/rsvp.js"></script>
+	<script src="../index.js"></script>
+
+	<!-- (c) 2011-2018 Absolunet -->
+</head>
+<body>
+
+	<script>
+
+	//pinki.fulfillVow('aaa', 'fulA');
+	//pinki.breakVow('aaa', 'broken');
+
+	pinki.fulfillVow('ccc', 'fulC');
+	//pinki.breakVow('ccc', 'breakC');
+
+
+	pinki.whenVows('aaa', 'bbb').then((data) => {
+		console.log(`aaabbb - ${data.aaa} - ${data.bbb}`);
+	},(data) => {
+		console.log(`aaabbb - ${data}`);
+	});
+
+
+	pinki.whenVows('aaa', 'bbb').then((data) => {
+		console.log(`aaabbb2 - ${data.aaa} - ${data.bbb}`);
+	},(data) => {
+		console.log(`aaabbb2 - ${data}`);
+	});
+
+
+	pinki.whenVows('bbb', 'ccc').then((data) => {
+		console.log(`bbbccc - ${data.bbb} - ${data.ccc}`);
+	},(data) => {
+		console.log(`bbbccc - ${data}`);
+	});
+
+
+	pinki.whenVows('ccc').then((data) => {
+		console.log(`ccc - ${data.ccc}`);
+	},(data) => {
+		console.log(`ccc - ${data}`);
+	});
+
+
+
+
+	//setTimeout(() => {
+	//	pinki.fulfillVow('ccc', 'fulC');
+	//}, 2000);
+
+	setTimeout(() => {
+		pinki.fulfillVow('aaa', 'fulA');
+	}, 3000);
+
+	setTimeout(() => {
+		pinki.fulfillVow('bbb', 'fulB');
+	}, 4000);
+
+
+
+	setTimeout(() => {
+		pinki.whenVows('aaa', 'ccc').then((data) => {
+			console.log(`aaaccc - ${data.aaa} - ${data.ccc}`);
+		},(data) => {
+			console.log(`aaaccc - ${data}`);
+		});
+	}, 6000);
+
+
+
+	</script>
+
+</body>
+</html>
