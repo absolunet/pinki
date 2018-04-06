@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://github.com/absolunet/pinki/raw/master/ressources/pinki.png" width="300" height="135" alt="pinki">
+	<img src="https://github.com/absolunet/pinki/raw/master/ressources/pinki.png" width="250" height="250" alt="pinki">
 </p>
 
 # pinki
