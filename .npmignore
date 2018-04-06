@@ -1,5 +1,7 @@
 bower_components
+ressources
 test
+vendor
 .editorconfig
 .eslintrc.yaml
 .gitignore
