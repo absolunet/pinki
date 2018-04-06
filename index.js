@@ -68,33 +68,42 @@
 
 
 
-		//-- Get all registered vow names
-		static get vows() {
-			return Object.keys(vows);
-		}
 
 
-		//-- When all vows are fulfilled or broke
-		static whenVows(...names) {
-			const promises = {};
+		//-- Vow
+		static get vow() {
+			return class {
 
-			// Group all vows Promises
-			names.forEach((vow) => {
-				promises[vow] = getDeferredVow(vow).promise;
-			});
-
-			return RSVP.hash(promises);
-		}
+				//-- Get all registered vow names
+				static get list() {
+					return Object.keys(vows);
+				}
 
 
-		//-- Fulfill a vow
-		static fulfillVow(name, data) {
-			getDeferredVow(name).resolve(data);
-		}
+				//-- When all vows are fulfilled or broke
+				static when(...names) {
+					const promises = {};
 
-		//-- Break a vow
-		static breakVow(name, error) {
-			getDeferredVow(name).reject(error);
+					// Group all vows Promises
+					names.forEach((vow) => {
+						promises[vow] = getDeferredVow(vow).promise;
+					});
+
+					return RSVP.hash(promises);
+				}
+
+
+				//-- Fulfill a vow
+				static fulfill(name, data) {
+					getDeferredVow(name).resolve(data);
+				}
+
+				//-- Break a vow
+				static break(name, error) {
+					getDeferredVow(name).reject(error);
+				}
+
+			};
 		}
 
 	};

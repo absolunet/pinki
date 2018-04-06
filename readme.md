@@ -32,7 +32,6 @@ $ bower install pinki
 ## Usage
 
 ```js
-
 // Node.js
 const { pinki } = require('pinki');
 
@@ -42,14 +41,14 @@ const { pinki } = require('pinki');
 const { pinki } = window;
 
 
-pinki.fulfillVow('alpha', 'Yeah!');
+pinki.vow.fulfill('alpha', 'Yeah!');
 
-pinki.whenVows('alpha', 'beta').then((data) => {
+pinki.vow.when('alpha', 'beta').then((data) => {
 	console.log(data);
 });
 
 setTimeout(() => {
-	pinki.fulfillVow('beta', 'Yessir!');
+	pinki.vow.fulfill('beta', 'Yessir!');
 }, 100);
 
 
@@ -81,16 +80,16 @@ Maps [`RSVP.Promise`](https://github.com/tildeio/rsvp.js#basic-usage).
 ## API - Vows
 **Vows** are name-based Promises that can be referenced anytime.
 
-### vows
+### vow.list
 Array of vow names than have been referenced by one of the methods.
 
-### whenVows(name1 *[, name2, nameN...]*)
+### vow.when(name1 *[, name2, nameN...]*)
 Returns a [`RSVP.hash`](https://github.com/tildeio/rsvp.js#hash-of-promises) Promise which reacts when all vows are fulfilled or one is broken.
 
-### fulfillVow(name, data)
+### vow.fulfill(name, data)
 Resolves the underlying Promise.
 
-### breakVow(name, error)
+### vow.break(name, error)
 Rejects the underlying Promise.
 
 

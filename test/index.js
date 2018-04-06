@@ -67,15 +67,13 @@ ava.test('Matching: pinki.Promise is identical to RSVP.Promise', (t) => {
 
 
 //-- Validate vow names
-ava.test('Vows: Check for invalid vow characters', (t) => {
+ava.test('Vow: Check for invalid vow characters', (t) => {
 	const invalid = `/=!@#$%?&*()_+|¡@£€∞ {}[]¬^¨~;:°«»,'"<>àÀâÂçÇéÉèÈëËêÊôÔüÜùÙ\\`.split('');
-
-	t.plan(invalid.length * 2);
 
 	invalid.forEach((char) => {
 		const name = `invalid--${char}`;
 		const error = t.throws(() => {
-			pinki.whenVows(name);
+			pinki.vow.when(name);
 		}, Error);
 
 		t.is(error.message, `pinki: Invalid vow name '${name}'`);
@@ -83,11 +81,11 @@ ava.test('Vows: Check for invalid vow characters', (t) => {
 });
 
 
-ava.test('Vows: Check for valid vow characters', (t) => {
+ava.test('Vow: Check for valid vow characters', (t) => {
 	const valid = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.`.split('');
 
 	valid.forEach((char) => {
-		pinki.whenVows(`valid--${char}`);
+		pinki.vow.when(`valid--${char}`);
 	});
 
 	t.pass();
@@ -98,49 +96,49 @@ ava.test('Vows: Check for valid vow characters', (t) => {
 
 
 
-//-- Check single `whenVows`
-ava.test.cb('Vows: Single `whenVows` with `fulfillVow` after', (t) => {
+//-- Check single `when`
+ava.test.cb('Vow: Single `when` with `fulfill` after', (t) => {
 	const topic = randomTopic();
 
-	pinki.whenVows(topic).then((data) => {
+	pinki.vow.when(topic).then((data) => {
 		t.is(data[topic], 'thx');
 		t.end();
 	});
 
-	pinki.fulfillVow(topic, 'thx');
+	pinki.vow.fulfill(topic, 'thx');
 });
 
 
-ava.test.cb('Vows: Single `whenVows` with `fulfillVow` before', (t) => {
+ava.test.cb('Vow: Single `when` with `fulfill` before', (t) => {
 	const topic = randomTopic();
 
-	pinki.fulfillVow(topic, 'thx');
+	pinki.vow.fulfill(topic, 'thx');
 
-	pinki.whenVows(topic).then((data) => {
+	pinki.vow.when(topic).then((data) => {
 		t.is(data[topic], 'thx');
 		t.end();
 	});
 });
 
 
-ava.test.cb('Vows: Single `whenVows` with `breakVow` after', (t) => {
+ava.test.cb('Vow: Single `when` with `break` after', (t) => {
 	const topic = randomTopic();
 
-	pinki.whenVows(topic).catch((error) => {
+	pinki.vow.when(topic).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
 
-	pinki.breakVow(topic, 'noooooo');
+	pinki.vow.break(topic, 'noooooo');
 });
 
 
-ava.test.cb('Vows: Single `whenVows` with `breakVow` before', (t) => {
+ava.test.cb('Vow: Single `when` with `break` before', (t) => {
 	const topic = randomTopic();
 
-	pinki.breakVow(topic, 'noooooo');
+	pinki.vow.break(topic, 'noooooo');
 
-	pinki.whenVows(topic).catch((error) => {
+	pinki.vow.when(topic).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
@@ -151,46 +149,46 @@ ava.test.cb('Vows: Single `whenVows` with `breakVow` before', (t) => {
 
 
 
-//-- Check multiple `whenVows` with `fulfillVow` */
-ava.test.cb('Vows: Multiple `whenVows` with `fulfillVow` after', (t) => {
+//-- Check multiple `when` with `fulfill` */
+ava.test.cb('Vow: Multiple `when` with `fulfill` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.whenVows(topic1, topic2).then((data) => {
+	pinki.vow.when(topic1, topic2).then((data) => {
 		t.is(data[topic1], 'thx1');
 		t.is(data[topic2], 'thx2');
 		t.end();
 	});
 
-	pinki.fulfillVow(topic1, 'thx1');
-	pinki.fulfillVow(topic2, 'thx2');
+	pinki.vow.fulfill(topic1, 'thx1');
+	pinki.vow.fulfill(topic2, 'thx2');
 });
 
 
-ava.test.cb('Vows: Multiple `whenVows` with `fulfillVow` before/after', (t) => {
+ava.test.cb('Vow: Multiple `when` with `fulfill` before/after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.fulfillVow(topic1, 'thx1');
+	pinki.vow.fulfill(topic1, 'thx1');
 
-	pinki.whenVows(topic1, topic2).then((data) => {
+	pinki.vow.when(topic1, topic2).then((data) => {
 		t.is(data[topic1], 'thx1');
 		t.is(data[topic2], 'thx2');
 		t.end();
 	});
 
-	pinki.fulfillVow(topic2, 'thx2');
+	pinki.vow.fulfill(topic2, 'thx2');
 });
 
 
-ava.test.cb('Vows: Multiple `whenVows` with `fulfillVow` before', (t) => {
+ava.test.cb('Vow: Multiple `when` with `fulfill` before', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.fulfillVow(topic1, 'thx1');
-	pinki.fulfillVow(topic2, 'thx2');
+	pinki.vow.fulfill(topic1, 'thx1');
+	pinki.vow.fulfill(topic2, 'thx2');
 
-	pinki.whenVows(topic1, topic2).then((data) => {
+	pinki.vow.when(topic1, topic2).then((data) => {
 		t.is(data[topic1], 'thx1');
 		t.is(data[topic2], 'thx2');
 		t.end();
@@ -203,44 +201,44 @@ ava.test.cb('Vows: Multiple `whenVows` with `fulfillVow` before', (t) => {
 
 
 
-//-- Check multiple `whenVows` with `breakVow`
-ava.test.cb('Vows: Multiple `whenVows` with `breakVow` after', (t) => {
+//-- Check multiple `when` with `break`
+ava.test.cb('Vow: Multiple `when` with `break` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.whenVows(topic1, topic2).catch((error) => {
+	pinki.vow.when(topic1, topic2).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
 
-	pinki.breakVow(topic1, 'noooooo');
-	pinki.breakVow(topic2, 'noooooo');
+	pinki.vow.break(topic1, 'noooooo');
+	pinki.vow.break(topic2, 'noooooo');
 });
 
 
-ava.test.cb('Vows: Multiple `whenVows` with `breakVow` before/after', (t) => {
+ava.test.cb('Vow: Multiple `when` with `break` before/after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.breakVow(topic1, 'noooooo');
+	pinki.vow.break(topic1, 'noooooo');
 
-	pinki.whenVows(topic1, topic2).catch((error) => {
+	pinki.vow.when(topic1, topic2).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
 
-	pinki.breakVow(topic2, 'noooooo');
+	pinki.vow.break(topic2, 'noooooo');
 });
 
 
-ava.test.cb('Vows: Multiple `whenVows` with `breakVow` before', (t) => {
+ava.test.cb('Vow: Multiple `when` with `break` before', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.breakVow(topic1, 'noooooo');
-	pinki.breakVow(topic2, 'noooooo');
+	pinki.vow.break(topic1, 'noooooo');
+	pinki.vow.break(topic2, 'noooooo');
 
-	pinki.whenVows(topic1, topic2).catch((error) => {
+	pinki.vow.when(topic1, topic2).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
@@ -252,88 +250,106 @@ ava.test.cb('Vows: Multiple `whenVows` with `breakVow` before', (t) => {
 
 
 
-//-- Check multiple `whenVows` with `fulfillVow` and `breakVow`
-ava.test.cb('Vows: Multiple `whenVows` with `fulfillVow`/`breakVow` after', (t) => {
+//-- Check multiple `when` with `fulfill` and `break`
+ava.test.cb('Vow: Multiple `when` with `fulfill`/`break` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.whenVows(topic1, topic2).catch((error) => {
+	pinki.vow.when(topic1, topic2).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
 
-	pinki.fulfillVow(topic1, 'thx1');
-	pinki.breakVow(topic2, 'noooooo');
+	pinki.vow.fulfill(topic1, 'thx1');
+	pinki.vow.break(topic2, 'noooooo');
 });
 
 
-ava.test.cb('Vows: Multiple `whenVows` with `breakVow`/`fulfillVow` after', (t) => {
+ava.test.cb('Vow: Multiple `when` with `break`/`fulfill` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.whenVows(topic1, topic2).catch((error) => {
+	pinki.vow.when(topic1, topic2).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
 
-	pinki.breakVow(topic1, 'noooooo');
-	pinki.fulfillVow(topic2, 'thx2');
+	pinki.vow.break(topic1, 'noooooo');
+	pinki.vow.fulfill(topic2, 'thx2');
 });
 
 
-ava.test.cb('Vows: Multiple `whenVows` with `fulfillVow` before and `breakVow` after', (t) => {
+ava.test.cb('Vow: Multiple `when` with `fulfill` before and `break` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.fulfillVow(topic1, 'thx1');
+	pinki.vow.fulfill(topic1, 'thx1');
 
-	pinki.whenVows(topic1, topic2).catch((error) => {
+	pinki.vow.when(topic1, topic2).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
 
-	pinki.breakVow(topic2, 'noooooo');
+	pinki.vow.break(topic2, 'noooooo');
 });
 
 
-ava.test.cb('Vows: Multiple `whenVows` with `breakVow` before and `fulfillVow` after', (t) => {
+ava.test.cb('Vow: Multiple `when` with `break` before and `fulfill` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.breakVow(topic1, 'noooooo');
+	pinki.vow.break(topic1, 'noooooo');
 
-	pinki.whenVows(topic1, topic2).catch((error) => {
+	pinki.vow.when(topic1, topic2).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
 
-	pinki.fulfillVow(topic2, 'thx2');
+	pinki.vow.fulfill(topic2, 'thx2');
 });
 
 
-ava.test.cb('Vows: Multiple `whenVows` with `fulfillVow`/`breakVow` before', (t) => {
+ava.test.cb('Vow: Multiple `when` with `fulfill`/`break` before', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.fulfillVow(topic1, 'thx1');
-	pinki.breakVow(topic2, 'noooooo');
+	pinki.vow.fulfill(topic1, 'thx1');
+	pinki.vow.break(topic2, 'noooooo');
 
-	pinki.whenVows(topic1, topic2).catch((error) => {
+	pinki.vow.when(topic1, topic2).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
 });
 
 
-ava.test.cb('Vows: Multiple `whenVows` with `breakVow`/`fulfillVow` before', (t) => {
+ava.test.cb('Vow: Multiple `when` with `break`/`fulfill` before', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.breakVow(topic1, 'noooooo');
-	pinki.fulfillVow(topic2, 'thx2');
+	pinki.vow.break(topic1, 'noooooo');
+	pinki.vow.fulfill(topic2, 'thx2');
 
-	pinki.whenVows(topic1, topic2).catch((error) => {
+	pinki.vow.when(topic1, topic2).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
+	});
+});
+
+
+
+
+
+
+//-- Check check if `list` returns an array of strings
+ava.test('Vow: `list` returns an array of strings', (t) => {
+	return Promise.resolve().then(() => {
+		const vows = pinki.vow.list;
+
+		t.true(Array.isArray(vows));
+
+		vows.forEach((vow) => {
+			t.is(typeof vow, 'string');
+		});
 	});
 });
