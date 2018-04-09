@@ -1,6 +1,6 @@
 {
   "name": "@absolunet/pinki",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Asynchronous libraries wrapper",
   "definition": "Pinky Promises",
   "homepage": "https://github.com/absolunet/pinki",
@@ -15,6 +15,9 @@
   },
   "bugs": {
     "url": "https://github.com/absolunet/pinki/issues"
+  },
+  "engines": {
+    "node": ">= 9.11.1"
   },
   "scripts": {
     "test": "ava"

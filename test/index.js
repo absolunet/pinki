@@ -100,8 +100,8 @@ ava.test('Vow: Check for valid vow characters', (t) => {
 ava.test.cb('Vow: Single `when` with `fulfill` after', (t) => {
 	const topic = randomTopic();
 
-	pinki.vow.when(topic).then((data) => {
-		t.is(data[topic], 'thx');
+	pinki.vow.when(topic).then(([data]) => {
+		t.is(data, 'thx');
 		t.end();
 	});
 
@@ -114,8 +114,8 @@ ava.test.cb('Vow: Single `when` with `fulfill` before', (t) => {
 
 	pinki.vow.fulfill(topic, 'thx');
 
-	pinki.vow.when(topic).then((data) => {
-		t.is(data[topic], 'thx');
+	pinki.vow.when(topic).then(([data]) => {
+		t.is(data, 'thx');
 		t.end();
 	});
 });
@@ -154,9 +154,9 @@ ava.test.cb('Vow: Multiple `when` with `fulfill` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.vow.when(topic1, topic2).then((data) => {
-		t.is(data[topic1], 'thx1');
-		t.is(data[topic2], 'thx2');
+	pinki.vow.when(topic1, topic2).then(([data1, data2]) => {
+		t.is(data1, 'thx1');
+		t.is(data2, 'thx2');
 		t.end();
 	});
 
@@ -171,9 +171,9 @@ ava.test.cb('Vow: Multiple `when` with `fulfill` before/after', (t) => {
 
 	pinki.vow.fulfill(topic1, 'thx1');
 
-	pinki.vow.when(topic1, topic2).then((data) => {
-		t.is(data[topic1], 'thx1');
-		t.is(data[topic2], 'thx2');
+	pinki.vow.when(topic1, topic2).then(([data1, data2]) => {
+		t.is(data1, 'thx1');
+		t.is(data2, 'thx2');
 		t.end();
 	});
 
@@ -188,9 +188,9 @@ ava.test.cb('Vow: Multiple `when` with `fulfill` before', (t) => {
 	pinki.vow.fulfill(topic1, 'thx1');
 	pinki.vow.fulfill(topic2, 'thx2');
 
-	pinki.vow.when(topic1, topic2).then((data) => {
-		t.is(data[topic1], 'thx1');
-		t.is(data[topic2], 'thx2');
+	pinki.vow.when(topic1, topic2).then(([data1, data2]) => {
+		t.is(data1, 'thx1');
+		t.is(data2, 'thx2');
 		t.end();
 	});
 

@@ -22,32 +22,44 @@
 	//pinki.vow.break('ccc', 'breakC');
 
 
-	pinki.vow.when('aaa', 'bbb').then((data) => {
-		console.log(`aaabbb - ${data.aaa} - ${data.bbb}`);
-	},(data) => {
-		console.log(`aaabbb - ${data}`);
-	});
+	pinki.vow.when('aaa', 'bbb')
+		.then(([dataA, dataB]) => {
+			console.log(`aaabbb - ${dataA} - ${dataB}`);
+		})
+		.catch((error) => {
+			console.log(`aaabbb - ${error}`);
+		})
+	;
 
 
-	pinki.vow.when('aaa', 'bbb').then((data) => {
-		console.log(`aaabbb2 - ${data.aaa} - ${data.bbb}`);
-	},(data) => {
-		console.log(`aaabbb2 - ${data}`);
-	});
+	pinki.vow.when('aaa', 'bbb')
+		.then(([dataA, dataB]) => {
+			console.log(`aaabbb2 - ${dataA} - ${dataB}`);
+		})
+		.catch((error) => {
+			console.log(`aaabbb2 - ${error}`);
+		})
+	;
 
 
-	pinki.vow.when('bbb', 'ccc').then((data) => {
-		console.log(`bbbccc - ${data.bbb} - ${data.ccc}`);
-	},(data) => {
-		console.log(`bbbccc - ${data}`);
-	});
+	pinki.vow.when('bbb', 'ccc')
+		.then(([dataB, dataC]) => {
+			console.log(`bbbccc - ${dataB} - ${dataC}`);
+		})
+		.catch((error) => {
+			console.log(`bbbccc - ${error}`);
+		})
+	;
 
 
-	pinki.vow.when('ccc').then((data) => {
-		console.log(`ccc - ${data.ccc}`);
-	},(data) => {
-		console.log(`ccc - ${data}`);
-	});
+	pinki.vow.when('ccc')
+		.then(([dataC]) => {
+			console.log(`ccc - ${dataC}`);
+		})
+		.catch((error) => {
+			console.log(`ccc - ${error}`);
+		})
+	;
 
 
 
@@ -67,11 +79,14 @@
 
 
 	setTimeout(() => {
-		pinki.vow.when('aaa', 'ccc').then((data) => {
-			console.log(`aaaccc - ${data.aaa} - ${data.ccc}`);
-		},(data) => {
-			console.log(`aaaccc - ${data}`);
-		});
+		pinki.vow.when('aaa', 'ccc')
+			.then(([dataA, dataC]) => {
+				console.log(`aaaccc - ${dataA} - ${dataC}`);
+			})
+			.catch((error) => {
+				console.log(`aaaccc - ${error}`);
+			})
+		;
 	}, 6000);
 
 

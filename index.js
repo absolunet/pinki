@@ -82,14 +82,14 @@
 
 				//-- When all vows are fulfilled or broke
 				static when(...names) {
-					const promises = {};
+					const promises = [];
 
 					// Group all vows Promises
 					names.forEach((vow) => {
-						promises[vow] = getDeferredVow(vow).promise;
+						promises.push(getDeferredVow(vow).promise);
 					});
 
-					return RSVP.hash(promises);
+					return RSVP.all(promises);
 				}
 
 

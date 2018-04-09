@@ -43,8 +43,8 @@ const { pinki } = window;
 
 pinki.vow.fulfill('alpha', 'Yeah!');
 
-pinki.vow.when('alpha', 'beta').then((data) => {
-	console.log(data);
+pinki.vow.when('alpha', 'beta').then(([dataA, dataB]) => {
+	console.log(dataA, dataB);
 });
 
 setTimeout(() => {
@@ -81,10 +81,10 @@ Maps [`RSVP.Promise`](https://github.com/tildeio/rsvp.js#basic-usage).
 **Vows** are name-based Promises that can be referenced anytime.
 
 ### vow.list
-Array of vow names than have been referenced by one of the methods.
+Array of vow names than have been registered by one of the methods.
 
 ### vow.when(name1 *[, name2, nameN...]*)
-Returns a [`RSVP.hash`](https://github.com/tildeio/rsvp.js#hash-of-promises) Promise which reacts when all vows are fulfilled or one is broken.
+Returns a [`RSVP.all`](https://github.com/tildeio/rsvp.js/#arrays-of-promises) Promise which reacts when all vows are fulfilled or one is broken.
 
 ### vow.fulfill(name, data)
 Resolves the underlying Promise.
@@ -100,4 +100,4 @@ Rejects the underlying Promise.
 MIT © [Absolunet](https://absolunet.com)
 
 
-*Credits:* “[Pinky Finger](https://thenounproject.com/term/pinky-finger/947218)” icon by [Mitchell D. Eva](https://www.mitchelleva.com) from [the Noun Project](https://thenounproject.com).
+*“[Pinky Finger](https://thenounproject.com/term/pinky-finger/947218)” icon by [Mitchell D. Eva](https://www.mitchelleva.com) from [the Noun Project](https://thenounproject.com).*
