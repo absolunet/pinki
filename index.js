@@ -35,8 +35,26 @@
 
 
 	//-- Private
-	const ID = 'pinki';
-	const vows = {};
+	const ID       = 'pinki';
+	const messages = [];
+	const vows     = {};
+
+
+	// Logic copied from https://github.com/mroderick/PubSubJS/blob/master/src/pubsub.js
+	const messageHasSubscribers = (topic, msgTopic) => {
+		let curr     = msgTopic;
+		let found    = curr === topic;
+		let position = curr.lastIndexOf('.');
+
+		while (!found && position !== -1) {
+			curr = curr.substr(0, position);
+			position = curr.lastIndexOf('.');
+			found = curr === topic;
+		}
+
+		return found;
+	};
+
 
 	const getDeferredVow = (name) => {
 		if (!(/^[a-z0-9.-]+$/i).test(name)) {
@@ -57,13 +75,53 @@
 	//-- Main
 	const pinki = class {
 
-		//-- Map PubSub
-		static get subscribe()   { return PubSub.subscribe; }
-		static get publish()     { return PubSub.publish; }
-		static get unsubscribe() { return PubSub.unsubscribe; }
-
 		//-- Map RSVP
 		static get Promise() { return RSVP.Promise; }
+
+
+
+
+
+
+		//-- Message
+		static get message() {
+			return class {
+
+				//-- Subscribe to a topic
+				static subscribe(topic, subscriber, { executePrevious = true } = {})   {
+					if (executePrevious) {
+						messages.forEach(({ topic:msgTopic, data:msgData }) => {
+							if (messageHasSubscribers(topic, msgTopic)) {
+								subscriber(msgTopic, msgData);
+							}
+						});
+					}
+
+					return PubSub.subscribe(topic, subscriber);
+				}
+
+
+				//-- Publish a message
+				static publish(topic, data) {
+					messages.push({ topic, data });
+
+					return PubSub.publish(topic, data);
+				}
+
+
+				//-- Unsubscribe to all topic
+				static get unsubscribe() {
+					return PubSub.unsubscribe;
+				}
+
+
+				//-- Get all published messages
+				static get list() {
+					return messages;
+				}
+
+			};
+		}
 
 
 

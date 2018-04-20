@@ -36,29 +36,240 @@ tester.lintJs([
 
 
 
-//-- Check PubSub matching
-ava.test('Matching: pinki.subscribe is identical to PubSub.subscribe', (t) => {
-	t.is(pinki.subscribe, PubSub.subscribe);
-});
-
-
-ava.test('Matching: pinki.publish is identical to PubSub.publish', (t) => {
-	t.is(pinki.publish, PubSub.publish);
-});
-
-
-ava.test('Matching: pinki.unsubscribe is identical to PubSub.unsubscribe', (t) => {
-	t.is(pinki.unsubscribe, PubSub.unsubscribe);
-});
-
-
-
-
-
-
 //-- Check RSVP.Promise matching
 ava.test('Matching: pinki.Promise is identical to RSVP.Promise', (t) => {
 	t.is(pinki.Promise, RSVP.Promise);
+});
+
+
+
+
+
+
+//-- Check direct pub/sub
+ava.test.cb('Message: Publish before subscribe and execute', (t) => {
+	t.plan(2);
+
+	const topic = randomTopic();
+
+	pinki.message.publish(topic, 'thx');
+
+	pinki.message.subscribe(topic, (msg, data) => {
+		t.is(msg, topic);
+		t.is(data, 'thx');
+	});
+
+	setTimeout(() => {
+		t.end();
+	}, 100);
+});
+
+
+ava.test.cb('Message: Publish before subscribe and no execute', (t) => {
+	t.plan(0);
+
+	const topic = randomTopic();
+
+	pinki.message.publish(topic, 'thx');
+
+	pinki.message.subscribe(topic, (msg, data) => {
+		t.is(msg, topic);
+		t.is(data, 'thx');
+	}, { executePrevious:false });
+
+	setTimeout(() => {
+		t.end();
+	}, 100);
+});
+
+
+ava.test.cb('Message: Publish after subscribe', (t) => {
+	t.plan(2);
+
+	const topic = randomTopic();
+
+	pinki.message.subscribe(topic, (msg, data) => {
+		t.is(msg, topic);
+		t.is(data, 'thx');
+	});
+
+	pinki.message.publish(topic, 'thx');
+
+	setTimeout(() => {
+		t.end();
+	}, 100);
+});
+
+
+ava.test.cb('Message: Publish before and after subscribe and execute', (t) => {
+	t.plan(4);
+
+	const topic = randomTopic();
+
+	pinki.message.publish(topic, 'thx');
+
+	pinki.message.subscribe(topic, (msg, data) => {
+		t.is(msg, topic);
+		t.true(data === 'thx' || data === 'thx2');
+	});
+
+	pinki.message.publish(topic, 'thx2');
+
+	setTimeout(() => {
+		t.end();
+	}, 100);
+});
+
+
+ava.test.cb('Message: Publish before and after subscribe and no execute', (t) => {
+	t.plan(2);
+
+	const topic = randomTopic();
+
+	pinki.message.publish(topic, 'thx');
+
+	pinki.message.subscribe(topic, (msg, data) => {
+		t.is(msg, topic);
+		t.true(data === 'thx2');
+	}, { executePrevious:false });
+
+	pinki.message.publish(topic, 'thx2');
+
+	setTimeout(() => {
+		t.end();
+	}, 100);
+});
+
+
+
+
+
+
+//-- Check hierarchical addressing pub/sub
+ava.test.cb('Message: Hierarchical publish before subscribe and execute', (t) => {
+	t.plan(2);
+
+	const topic    = randomTopic();
+	const subTopic = `${topic}.alpha`;
+
+	pinki.message.publish(subTopic, 'thx');
+
+	pinki.message.subscribe(topic, (msg, data) => {
+		t.is(msg, subTopic);
+		t.is(data, 'thx');
+	});
+
+	setTimeout(() => {
+		t.end();
+	}, 100);
+});
+
+
+ava.test.cb('Message: Hierarchical publish before subscribe and no execute', (t) => {
+	t.plan(0);
+
+	const topic    = randomTopic();
+	const subTopic = `${topic}.alpha`;
+
+	pinki.message.publish(subTopic, 'thx');
+
+	pinki.message.subscribe(topic, (msg, data) => {
+		t.is(msg, subTopic);
+		t.is(data, 'thx');
+	}, { executePrevious:false });
+
+	setTimeout(() => {
+		t.end();
+	}, 100);
+});
+
+
+ava.test.cb('Message: Hierarchical publish after subscribe', (t) => {
+	t.plan(2);
+
+	const topic    = randomTopic();
+	const subTopic = `${topic}.alpha`;
+
+	pinki.message.subscribe(topic, (msg, data) => {
+		t.is(msg, subTopic);
+		t.is(data, 'thx');
+	});
+
+	pinki.message.publish(subTopic, 'thx');
+
+	setTimeout(() => {
+		t.end();
+	}, 100);
+});
+
+
+ava.test.cb('Message: Hierarchical publish before and after subscribe and execute', (t) => {
+	t.plan(4);
+
+	const topic    = randomTopic();
+	const subTopic = `${topic}.alpha`;
+
+	pinki.message.publish(subTopic, 'thx');
+
+	pinki.message.subscribe(topic, (msg, data) => {
+		t.is(msg, subTopic);
+		t.true(data === 'thx' || data === 'thx2');
+	});
+
+	pinki.message.publish(subTopic, 'thx2');
+
+	setTimeout(() => {
+		t.end();
+	}, 100);
+});
+
+
+ava.test.cb('Message: Hierarchical publish before and after subscribe and no execute', (t) => {
+	t.plan(2);
+
+	const topic    = randomTopic();
+	const subTopic = `${topic}.alpha`;
+
+	pinki.message.publish(subTopic, 'thx');
+
+	pinki.message.subscribe(topic, (msg, data) => {
+		t.is(msg, subTopic);
+		t.true(data === 'thx2');
+	}, { executePrevious:false });
+
+	pinki.message.publish(subTopic, 'thx2');
+
+	setTimeout(() => {
+		t.end();
+	}, 100);
+});
+
+
+
+
+
+
+//-- Check check if `list` returns an array of object
+ava.test('Message: `list` returns an array of object', (t) => {
+	return Promise.resolve().then(() => {
+		const messages = pinki.message.list;
+
+		t.true(Array.isArray(messages));
+
+		messages.forEach((vow) => {
+			t.is(typeof vow, 'object');
+		});
+	});
+});
+
+
+
+
+
+
+//-- Check PubSub.unsubscribe matching
+ava.test('Matching: pinki.message.unsubscribe is identical to PubSub.unsubscribe', (t) => {
+	t.is(pinki.message.unsubscribe, PubSub.unsubscribe);
 });
 
 

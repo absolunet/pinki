@@ -14,6 +14,22 @@
 <body>
 
 	<script>
+		pinki.message.publish('aaa.bbb.ccc', 'pubA1');
+
+		pinki.message.subscribe('aaa', (topic, data) => {
+			console.log(`sub1: ${topic}/${data}`);
+		});
+
+		pinki.message.subscribe('aaa.bbb', (topic, data) => {
+			console.log(`sub2: ${topic}/${data}`);
+		}, { executePrevious:false });
+
+		pinki.message.publish('aaa.bbb.ddd', 'pubA2');
+
+		console.log(pinki.message.list);
+	</script>
+
+	<!-- script>
 
 	//pinki.vow.fulfill('aaa', 'fulA');
 	//pinki.vow.break('aaa', 'broken');
@@ -91,7 +107,7 @@
 
 
 
-	</script>
+	</script -->
 
 </body>
 </html>

@@ -41,19 +41,37 @@ const { pinki } = require('pinki');
 const { pinki } = window;
 
 
-pinki.vow.fulfill('alpha', 'Yeah!');
+pinki.message.publish('alpha', 'Yeah!');
 
-pinki.vow.when('alpha', 'beta').then(([dataA, dataB]) => {
-	console.log(dataA, dataB);
+pinki.message.subscribe('alpha').then((data) => {
+	console.log(data);
 });
 
 setTimeout(() => {
-	pinki.vow.fulfill('beta', 'Yessir!');
+	pinki.message.publish('alpha', 'Yessir!');
 }, 100);
 
 
 // Outputs:
-// { alpha:'Yeah!', beta:'Yessir!' }
+// Yeah!
+// Yessir!
+
+
+
+
+pinki.vow.fulfill('gamma', 'Yeah!');
+
+pinki.vow.when('gamma', 'delta').then(([dataA, dataB]) => {
+	console.log(dataA, dataB);
+});
+
+setTimeout(() => {
+	pinki.vow.fulfill('delta', 'Yessir!');
+}, 100);
+
+
+// Outputs:
+// { gamma:'Yeah!', delta:'Yessir!' }
 ```
 
 
@@ -61,17 +79,30 @@ setTimeout(() => {
 
 ## API - Libraries mapping
 
-### subscribe(topic, subscriber)
-Maps [`PubSub.subscribe`](https://github.com/mroderick/PubSubJS#basic-example).
-
-### publish(topic, data)
-Maps [`PubSub.publish`](https://github.com/mroderick/PubSubJS#basic-example).
-
-### unsubscribe(topic|token)
-Maps [`PubSub.unsubscribe`](https://github.com/jprichardson/node-fs-extra/blob/master/docs/copy-sync.md).
-
 ### Promise
 Maps [`RSVP.Promise`](https://github.com/tildeio/rsvp.js#basic-usage).
+
+
+
+<br>
+
+## API - Messages
+
+### message.subscribe(topic, subscriber *[, options]*)
+Wraps [`PubSub.subscribe`](https://github.com/mroderick/PubSubJS#basic-example), but also executes previously published messages that matches the subscription.
+
+#### options.executePrevious
+Type: `Boolean`<br>
+Default: `true`<br>
+Execute previously published messages.
+
+
+### message.publish(topic, data)
+Wraps [`PubSub.publish`](https://github.com/mroderick/PubSubJS#basic-example).
+
+### message.unsubscribe(topic|token)
+Maps [`PubSub.unsubscribe`](https://github.com/jprichardson/node-fs-extra/blob/master/docs/copy-sync.md).
+
 
 
 
