@@ -43,7 +43,7 @@ const { pinki } = window;
 
 pinki.message.publish('alpha', 'Yeah!');
 
-pinki.message.subscribe('alpha').then((data) => {
+pinki.message.subscribe('alpha', (data) => {
 	console.log(data);
 });
 
