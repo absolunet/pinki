@@ -28,9 +28,12 @@ tester.lintJs([
 	`*/*.js`,
 	`!node_modules/**/*.js`,
 	`!bower_components/**/*.js`,
-	`!vendor/*.js`
+	`!vendor/*.js`,
+	`!dist/es5.js`
 ]);
 
+tester.lintJson();
+tester.lintYaml();
 
 
 

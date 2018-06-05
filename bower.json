@@ -1,12 +1,12 @@
 {
   "name": "pinki",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Asynchronous libraries wrapper",
   "definition": "Pinky Promises",
   "homepage": "https://github.com/absolunet/pinki",
   "author": {
     "name": "Absolunet",
-    "url": "https://absolunet.com/"
+    "url": "https://absolunet.com"
   },
   "license": "MIT",
   "repository": {
