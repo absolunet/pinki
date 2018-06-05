@@ -1,6 +1,6 @@
 {
   "name": "@absolunet/pinki",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Asynchronous libraries wrapper",
   "definition": "Pinky Promises",
   "homepage": "https://github.com/absolunet/pinki",

@@ -49,7 +49,7 @@
 
 	var getDeferredVow = function(name) {
 		if (!(/^[a-z0-9.-]+$/i).test(name)) {
-			throw new Error(`${ID}: Invalid vow name '${name}'`);
+			throw new Error(ID + ': Invalid vow name \'' + name + '\'');
 
 		} else if (!vows[name]) {
 			vows[name] = RSVP.defer();

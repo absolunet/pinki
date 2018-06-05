@@ -7,3 +7,4 @@ vendor
 .gitignore
 .travis.yml
 bower.json
+dist/es5.js

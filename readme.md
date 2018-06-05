@@ -3,10 +3,12 @@
 </p>
 
 # pinki
-[![NPM version](https://img.shields.io/npm/v/@absolunet/pinki.svg)](https://www.npmjs.com/package/@absolunet/pinki)
-![Bower version](http://img.shields.io/bower/v/pinki.svg?style=flat)
-[![Travis build](https://api.travis-ci.org/absolunet/pinki.svg?branch=master)](https://travis-ci.org/absolunet/pinki/builds)
-[![Dependencies](https://david-dm.org/absolunet/pinki/status.svg)](https://david-dm.org/absolunet/pinki)
+[![npm](https://img.shields.io/npm/v/@absolunet/pinki.svg)](https://www.npmjs.com/package/@absolunet/pinki)
+![Bower](http://img.shields.io/bower/v/pinki.svg)
+[![npm dependencies](https://david-dm.org/absolunet/pinki/status.svg)](https://david-dm.org/absolunet/pinki)
+[![npms](https://badges.npms.io/%40absolunet%2Fpinki.svg)](https://npms.io/search?q=%40absolunet%2Fpinki)
+[![Travis CI](https://api.travis-ci.org/absolunet/pinki.svg?branch=master)](https://travis-ci.org/absolunet/pinki/builds)
+[![Code style ESLint](https://img.shields.io/badge/code_style-@absolunet/nwayo-659d32.svg)](https://github.com/absolunet/eslint-config-nwayo)
 #### Pinky Promises
 > Asynchronous libraries wrapper
 
