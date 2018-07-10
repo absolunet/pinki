@@ -1,0 +1,3 @@
+extends: '@absolunet/eslint-config-core'
+parserOptions:
+  sourceType: module

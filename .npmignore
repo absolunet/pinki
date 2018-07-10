@@ -1,10 +1,12 @@
 bower_components
 ressources
+src
 test
 vendor
 .editorconfig
+.eslintignore
 .eslintrc.yaml
 .gitignore
 .travis.yml
 bower.json
-dist/es5.js
+webpack.config.js

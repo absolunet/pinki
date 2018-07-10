@@ -8,7 +8,7 @@ const tester = require('@absolunet/tester');
 
 const PubSub    = require('pubsub-js');
 const RSVP      = require('rsvp');
-const { pinki } = require('../index');
+const { pinki } = require('../dist/node');
 
 const randomTopic = () => {
 	global.___randomTopic___ = global.___randomTopic___ || 'random--';
@@ -29,7 +29,7 @@ tester.lintJs([
 	`!node_modules/**/*.js`,
 	`!bower_components/**/*.js`,
 	`!vendor/*.js`,
-	`!dist/es5.js`
+	`!dist/*.js`
 ]);
 
 tester.lintJson();

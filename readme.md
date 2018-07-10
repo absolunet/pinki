@@ -8,7 +8,9 @@
 [![npm dependencies](https://david-dm.org/absolunet/pinki/status.svg)](https://david-dm.org/absolunet/pinki)
 [![npms](https://badges.npms.io/%40absolunet%2Fpinki.svg)](https://npms.io/search?q=%40absolunet%2Fpinki)
 [![Travis CI](https://api.travis-ci.org/absolunet/pinki.svg?branch=master)](https://travis-ci.org/absolunet/pinki/builds)
-[![Code style ESLint](https://img.shields.io/badge/code_style-@absolunet/nwayo-659d32.svg)](https://github.com/absolunet/eslint-config-nwayo)
+[![Code style ESLint](https://img.shields.io/badge/code_style-@absolunet/core-659d32.svg)](https://github.com/absolunet/eslint-config-core)
+
+
 #### Pinky Promises
 > Asynchronous libraries wrapper
 

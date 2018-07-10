@@ -16,16 +16,19 @@
   "bugs": {
     "url": "https://github.com/absolunet/pinki/issues"
   },
-  "main": "index.js",
+  "main": "dist/web.js",
   "ignore": [
     "ressources",
+    "src",
     "test",
     ".editorconfig",
+    ".eslintignore",
     ".eslintrc.yaml",
     ".gitignore",
     ".npmignore",
     ".travis.yml",
-    "package.json"
+    "package.json",
+    "webpack.config.json"
   ],
   "dependencies": {
     "pubsub-js": "^1.6.0"
