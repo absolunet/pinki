@@ -1,6 +1,7 @@
 //--------------------------------------------------------
 //-- Vow
 //--------------------------------------------------------
+/* eslint-disable class-methods-use-this */
 
 //-- Load vendor libriaries
 const RSVP = require('rsvp');  // eslint-disable-line no-undef
@@ -31,13 +32,13 @@ const getDeferredVow = (name) => {
 class Vow {
 
 	//-- Get all registered vow names
-	static get list() {
+	get list() {
 		return Object.keys(vows);
 	}
 
 
 	//-- When all vows are fulfilled or broke
-	static when(...names) {
+	when(...names) {
 		const promises = [];
 
 		// Group all vows Promises
@@ -50,16 +51,16 @@ class Vow {
 
 
 	//-- Fulfill a vow
-	static fulfill(name, data) {
+	fulfill(name, data) {
 		getDeferredVow(name).resolve(data);
 	}
 
 	//-- Break a vow
-	static break(name, error) {
+	break(name, error) {
 		getDeferredVow(name).reject(error);
 	}
 
 }
 
 
-export default Vow;
+export default new Vow();

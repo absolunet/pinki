@@ -111,6 +111,7 @@ __webpack_require__.r(__webpack_exports__);
 //--------------------------------------------------------
 //-- pinki
 //--------------------------------------------------------
+/* eslint-disable class-methods-use-this */
 
 
 
@@ -125,23 +126,23 @@ const RSVP = __webpack_require__(5);  // eslint-disable-line no-undef
 
 
 //-- Main
-class pinki {
+class Pinki {
 
 
 	//-- Promise
-	static get Promise() {
+	get Promise() {
 		return RSVP.Promise;
 	}
 
 
 	//-- Message
-	static get message() {
+	get message() {
 		return _lib_message_js__WEBPACK_IMPORTED_MODULE_0__["default"];
 	}
 
 
 	//-- Vow
-	static get vow() {
+	get vow() {
 		return _lib_vow_js__WEBPACK_IMPORTED_MODULE_1__["default"];
 	}
 
@@ -149,7 +150,7 @@ class pinki {
 
 
 //-- Publish
-/* harmony default export */ __webpack_exports__["default"] = (pinki);
+/* harmony default export */ __webpack_exports__["default"] = (new Pinki());
 
 
 /***/ }),
@@ -161,6 +162,7 @@ __webpack_require__.r(__webpack_exports__);
 //--------------------------------------------------------
 //-- Message
 //--------------------------------------------------------
+/* eslint-disable class-methods-use-this */
 
 //-- Load vendor libriaries
 const PubSub = __webpack_require__(3);  // eslint-disable-line no-undef
@@ -193,7 +195,7 @@ const messageHasSubscribers = (topic, msgTopic) => {
 class Message {
 
 	//-- Subscribe to a topic
-	static subscribe(topic, subscriber, { executePrevious = true } = {})   {
+	subscribe(topic, subscriber, { executePrevious = true } = {})   {
 		if (executePrevious) {
 			messages.forEach(({ topic:msgTopic, data:msgData }) => {
 				if (messageHasSubscribers(topic, msgTopic)) {
@@ -207,7 +209,7 @@ class Message {
 
 
 	//-- Publish a message
-	static publish(topic, data) {
+	publish(topic, data) {
 		messages.push({ topic, data });
 
 		return PubSub.publish(topic, data);
@@ -215,20 +217,20 @@ class Message {
 
 
 	//-- Unsubscribe to all topic
-	static get unsubscribe() {
+	get unsubscribe() {
 		return PubSub.unsubscribe;
 	}
 
 
 	//-- Get all published messages
-	static get list() {
+	get list() {
 		return messages;
 	}
 
 }
 
 
-/* harmony default export */ __webpack_exports__["default"] = (Message);
+/* harmony default export */ __webpack_exports__["default"] = (new Message());
 
 
 /***/ }),
@@ -246,6 +248,7 @@ __webpack_require__.r(__webpack_exports__);
 //--------------------------------------------------------
 //-- Vow
 //--------------------------------------------------------
+/* eslint-disable class-methods-use-this */
 
 //-- Load vendor libriaries
 const RSVP = __webpack_require__(5);  // eslint-disable-line no-undef
@@ -276,13 +279,13 @@ const getDeferredVow = (name) => {
 class Vow {
 
 	//-- Get all registered vow names
-	static get list() {
+	get list() {
 		return Object.keys(vows);
 	}
 
 
 	//-- When all vows are fulfilled or broke
-	static when(...names) {
+	when(...names) {
 		const promises = [];
 
 		// Group all vows Promises
@@ -295,19 +298,19 @@ class Vow {
 
 
 	//-- Fulfill a vow
-	static fulfill(name, data) {
+	fulfill(name, data) {
 		getDeferredVow(name).resolve(data);
 	}
 
 	//-- Break a vow
-	static break(name, error) {
+	break(name, error) {
 		getDeferredVow(name).reject(error);
 	}
 
 }
 
 
-/* harmony default export */ __webpack_exports__["default"] = (Vow);
+/* harmony default export */ __webpack_exports__["default"] = (new Vow());
 
 
 /***/ }),

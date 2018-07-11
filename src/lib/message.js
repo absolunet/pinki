@@ -1,6 +1,7 @@
 //--------------------------------------------------------
 //-- Message
 //--------------------------------------------------------
+/* eslint-disable class-methods-use-this */
 
 //-- Load vendor libriaries
 const PubSub = require('pubsub-js');  // eslint-disable-line no-undef
@@ -33,7 +34,7 @@ const messageHasSubscribers = (topic, msgTopic) => {
 class Message {
 
 	//-- Subscribe to a topic
-	static subscribe(topic, subscriber, { executePrevious = true } = {})   {
+	subscribe(topic, subscriber, { executePrevious = true } = {})   {
 		if (executePrevious) {
 			messages.forEach(({ topic:msgTopic, data:msgData }) => {
 				if (messageHasSubscribers(topic, msgTopic)) {
@@ -47,7 +48,7 @@ class Message {
 
 
 	//-- Publish a message
-	static publish(topic, data) {
+	publish(topic, data) {
 		messages.push({ topic, data });
 
 		return PubSub.publish(topic, data);
@@ -55,17 +56,17 @@ class Message {
 
 
 	//-- Unsubscribe to all topic
-	static get unsubscribe() {
+	get unsubscribe() {
 		return PubSub.unsubscribe;
 	}
 
 
 	//-- Get all published messages
-	static get list() {
+	get list() {
 		return messages;
 	}
 
 }
 
 
-export default Message;
+export default new Message();

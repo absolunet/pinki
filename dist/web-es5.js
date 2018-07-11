@@ -116,6 +116,7 @@ Object.defineProperty(exports, "__esModule", {
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); //--------------------------------------------------------
 //-- pinki
 //--------------------------------------------------------
+/* eslint-disable class-methods-use-this */
 
 var _message = __webpack_require__(2);
 
@@ -135,12 +136,12 @@ var RSVP = __webpack_require__(5); // eslint-disable-line no-undef
 
 //-- Main
 
-var pinki = function () {
-	function pinki() {
-		_classCallCheck(this, pinki);
+var Pinki = function () {
+	function Pinki() {
+		_classCallCheck(this, Pinki);
 	}
 
-	_createClass(pinki, null, [{
+	_createClass(Pinki, [{
 		key: 'Promise',
 
 
@@ -166,13 +167,13 @@ var pinki = function () {
 		}
 	}]);
 
-	return pinki;
+	return Pinki;
 }();
 
 //-- Publish
 
 
-exports.default = pinki;
+exports.default = new Pinki();
 
 /***/ }),
 /* 2 */
@@ -192,6 +193,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //--------------------------------------------------------
 //-- Message
 //--------------------------------------------------------
+/* eslint-disable class-methods-use-this */
 
 //-- Load vendor libriaries
 var PubSub = __webpack_require__(3); // eslint-disable-line no-undef
@@ -222,7 +224,7 @@ var Message = function () {
 		_classCallCheck(this, Message);
 	}
 
-	_createClass(Message, null, [{
+	_createClass(Message, [{
 		key: 'subscribe',
 
 
@@ -276,7 +278,7 @@ var Message = function () {
 	return Message;
 }();
 
-exports.default = Message;
+exports.default = new Message();
 
 /***/ }),
 /* 3 */
@@ -302,6 +304,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //--------------------------------------------------------
 //-- Vow
 //--------------------------------------------------------
+/* eslint-disable class-methods-use-this */
 
 //-- Load vendor libriaries
 var RSVP = __webpack_require__(5); // eslint-disable-line no-undef
@@ -327,7 +330,7 @@ var Vow = function () {
 		_classCallCheck(this, Vow);
 	}
 
-	_createClass(Vow, null, [{
+	_createClass(Vow, [{
 		key: 'when',
 
 
@@ -376,7 +379,7 @@ var Vow = function () {
 	return Vow;
 }();
 
-exports.default = Vow;
+exports.default = new Vow();
 
 /***/ }),
 /* 5 */

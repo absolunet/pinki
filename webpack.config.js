@@ -3,28 +3,19 @@
 //--------------------------------------------------------
 'use strict';
 
-const merge = require('lodash.merge');
-const path  = require('path');
+const merge          = require('lodash.merge');
+const libraryBuilder = require('@absolunet/library-builder');
 
 
-//-- Common
-const commonConfig = {
-	mode: 'none',
-	devtool: '',
-	output: {
-		path: path.resolve(__dirname, 'dist')
-	}
-};
+
+
+
+
+libraryBuilder.setRoot(__dirname);
 
 
 //-- Node.js
-const nodeConfig = merge({}, commonConfig, {
-	target: 'node',
-	entry:  './src/wrapper/node.js',
-	output: {
-		filename: 'node.js',
-		libraryTarget: 'commonjs2'
-	},
+const nodeConfig = merge({}, libraryBuilder.config.node, {
 	externals: [
 		'pubsub-js',
 		'rsvp'
@@ -33,40 +24,19 @@ const nodeConfig = merge({}, commonConfig, {
 
 
 //-- Web
-const webConfig = merge({}, commonConfig, {
-	target: 'web',
-	entry:  './src/wrapper/web.js',
-	output: {
-		filename: 'web.js'
-	},
+const webExternals = {
 	externals: {
 		'pubsub-js': 'PubSub',
 		'rsvp':      'RSVP'
 	}
-});
+};
+
+const webConfig    = merge({}, libraryBuilder.config.web,    webExternals);
+const webES5Config = merge({}, libraryBuilder.config.webES5, webExternals);
 
 
-//-- Web ES5
-const webES5Config = merge({}, webConfig, {
-	output: {
-		filename: 'web-es5.js'
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /(node_modules|bower_components)/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: ['env']
-					}
-				}
-			}
-		]
-	}
 
-});
+
 
 
 module.exports = [nodeConfig, webConfig, webES5Config];

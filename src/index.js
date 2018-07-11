@@ -1,6 +1,7 @@
 //--------------------------------------------------------
 //-- pinki
 //--------------------------------------------------------
+/* eslint-disable class-methods-use-this */
 
 import Message from './lib/message.js';
 import Vow     from './lib/vow.js';
@@ -15,23 +16,23 @@ const RSVP = require('rsvp');  // eslint-disable-line no-undef
 
 
 //-- Main
-class pinki {
+class Pinki {
 
 
 	//-- Promise
-	static get Promise() {
+	get Promise() {
 		return RSVP.Promise;
 	}
 
 
 	//-- Message
-	static get message() {
+	get message() {
 		return Message;
 	}
 
 
 	//-- Vow
-	static get vow() {
+	get vow() {
 		return Vow;
 	}
 
@@ -39,4 +40,4 @@ class pinki {
 
 
 //-- Publish
-export default pinki;
+export default new Pinki();
