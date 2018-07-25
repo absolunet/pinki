@@ -2,6 +2,6 @@
 //-- Wrapper for web build
 //--------------------------------------------------------
 
-import all from '../index.js';
+import all from '..';
 
-window.pinki = all;  // eslint-disable-line
+window.pinki = all;  // eslint-disable-line no-restricted-globals,no-undef

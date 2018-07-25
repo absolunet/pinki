@@ -23,17 +23,8 @@ const randomTopic = () => {
 
 
 //-- Linter
-tester.lintJs([
-	`*.js`,
-	`*/*.js`,
-	`!node_modules/**/*.js`,
-	`!bower_components/**/*.js`,
-	`!vendor/*.js`,
-	`!dist/*.js`
-]);
+tester.npmPackage.validateLibrary();
 
-tester.lintJson();
-tester.lintYaml();
 
 
 

@@ -8,6 +8,12 @@
     "name": "Absolunet",
     "url": "https://absolunet.com"
   },
+  "keywords": [
+    "deferred",
+    "promise",
+    "pubsub",
+    "rsvp"
+  ],
   "license": "MIT",
   "repository": {
     "url": "git://github.com/absolunet/pinki.git",
@@ -17,17 +23,17 @@
     "url": "https://github.com/absolunet/pinki/issues"
   },
   "engines": {
-    "node": ">= 10.6.0"
+    "node": ">= 10.7.0"
   },
   "main": "dist/node.js",
+  "browser": "dist/web.js",
   "scripts": {
     "build": "node node_modules/@absolunet/library-builder/bin/build.js",
     "test": "ava"
   },
   "devDependencies": {
-    "@absolunet/eslint-config-core": "1.0.0",
     "@absolunet/library-builder": "0.0.1",
-    "@absolunet/tester": "1.7.1",
+    "@absolunet/tester": "2.1.0",
     "lodash.merge": "4.6.1"
   },
   "dependencies": {

@@ -1,13 +1,17 @@
 {
   "name": "pinki",
-  "version": "1.0.2",
   "description": "Asynchronous libraries wrapper",
-  "definition": "Pinky Promises",
   "homepage": "https://github.com/absolunet/pinki",
-  "author": {
+  "authors": [{
     "name": "Absolunet",
     "url": "https://absolunet.com"
-  },
+  }],
+  "keywords": [
+    "deferred",
+    "promise",
+    "pubsub",
+    "rsvp"
+  ],
   "license": "MIT",
   "repository": {
     "url": "git://github.com/absolunet/pinki.git",
@@ -16,6 +20,7 @@
   "bugs": {
     "url": "https://github.com/absolunet/pinki/issues"
   },
+  "moduleType": "globals",
   "main": "dist/web.js",
   "ignore": [
     "ressources",

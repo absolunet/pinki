@@ -2,4 +2,4 @@
 //-- Wrapper for Node.js build
 //--------------------------------------------------------
 
-export { default as pinki } from '../index.js';
+export { default as pinki } from '..';
