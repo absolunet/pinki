@@ -31,9 +31,9 @@ $ npm install @absolunet/pinki
 // Node.js
 const pinki = require('@absolunet/pinki');
 
-// Browser
-// Load PubSubJs via bower_components
-// Load RSVP via vendor/rsvp.js or CDN
+// Browser - Load vendor libraries
+// - /node_modules/pubsub-js/src/pubsub.js
+// - /node_modules/rsvp/dist/rsvp.js
 const { pinki } = window;
 
 
