@@ -86,18 +86,16 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 //--------------------------------------------------------
-//-- Wrapper for web build
+//-- Export wrapper for browser build
 //--------------------------------------------------------
 
 
-
-window.pinki = _index_js__WEBPACK_IMPORTED_MODULE_0__["default"];  // eslint-disable-line
+/* eslint-disable no-restricted-globals,no-undef,no-process-env */
+window["pinki"] = __webpack_require__(1).default;
 
 
 /***/ }),
@@ -106,50 +104,35 @@ window.pinki = _index_js__WEBPACK_IMPORTED_MODULE_0__["default"];  // eslint-dis
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _lib_message_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _lib_vow_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var _lib_message__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _lib_vow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 //--------------------------------------------------------
 //-- pinki
 //--------------------------------------------------------
-/* eslint-disable class-methods-use-this */
 
 
 
 
-
-//-- Load vendor libriaries
-const RSVP = __webpack_require__(5);  // eslint-disable-line no-undef
+const RSVP = __webpack_require__(5);
 
 
-
-
-
-
-//-- Main
 class Pinki {
 
-
-	//-- Promise
 	get Promise() {
 		return RSVP.Promise;
 	}
 
-
-	//-- Message
 	get message() {
-		return _lib_message_js__WEBPACK_IMPORTED_MODULE_0__["default"];
+		return _lib_message__WEBPACK_IMPORTED_MODULE_0__["default"];
 	}
 
-
-	//-- Vow
 	get vow() {
-		return _lib_vow_js__WEBPACK_IMPORTED_MODULE_1__["default"];
+		return _lib_vow__WEBPACK_IMPORTED_MODULE_1__["default"];
 	}
 
 }
 
 
-//-- Publish
 /* harmony default export */ __webpack_exports__["default"] = (new Pinki());
 
 
@@ -162,18 +145,16 @@ __webpack_require__.r(__webpack_exports__);
 //--------------------------------------------------------
 //-- Message
 //--------------------------------------------------------
-/* eslint-disable class-methods-use-this */
 
-//-- Load vendor libriaries
-const PubSub = __webpack_require__(3);  // eslint-disable-line no-undef
+const PubSub = __webpack_require__(3);
 
 
 //-- Private
 const messages = [];
 
 // Logic copied from https://github.com/mroderick/PubSubJS/blob/master/src/pubsub.js
-const messageHasSubscribers = (topic, msgTopic) => {
-	let curr     = msgTopic;
+const messageHasSubscribers = (topic, messageTopic) => {
+	let curr     = messageTopic;
 	let found    = curr === topic;
 	let position = curr.lastIndexOf('.');
 
@@ -191,15 +172,14 @@ const messageHasSubscribers = (topic, msgTopic) => {
 
 
 
-//-- Main
 class Message {
 
 	//-- Subscribe to a topic
 	subscribe(topic, subscriber, { executePrevious = true } = {})   {
 		if (executePrevious) {
-			messages.forEach(({ topic:msgTopic, data:msgData }) => {
-				if (messageHasSubscribers(topic, msgTopic)) {
-					subscriber(msgTopic, msgData);
+			messages.forEach(({ topic: messageTopic, data: messageData }) => {
+				if (messageHasSubscribers(topic, messageTopic)) {
+					subscriber(messageTopic, messageData);
 				}
 			});
 		}
@@ -237,7 +217,7 @@ class Message {
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = PubSub;
+module.exports = window.PubSub;
 
 /***/ }),
 /* 4 */
@@ -248,10 +228,8 @@ __webpack_require__.r(__webpack_exports__);
 //--------------------------------------------------------
 //-- Vow
 //--------------------------------------------------------
-/* eslint-disable class-methods-use-this */
 
-//-- Load vendor libriaries
-const RSVP = __webpack_require__(5);  // eslint-disable-line no-undef
+const RSVP = __webpack_require__(5);
 
 
 //-- Private
@@ -274,8 +252,6 @@ const getDeferredVow = (name) => {
 
 
 
-
-//-- Main
 class Vow {
 
 	//-- Get all registered vow names
@@ -317,7 +293,7 @@ class Vow {
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = RSVP;
+module.exports = window.RSVP;
 
 /***/ })
 /******/ ]);

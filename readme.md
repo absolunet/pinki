@@ -4,11 +4,10 @@
 
 # pinki
 [![npm](https://img.shields.io/npm/v/@absolunet/pinki.svg)](https://www.npmjs.com/package/@absolunet/pinki)
-![Bower](http://img.shields.io/bower/v/pinki.svg)
 [![npm dependencies](https://david-dm.org/absolunet/pinki/status.svg)](https://david-dm.org/absolunet/pinki)
 [![npms](https://badges.npms.io/%40absolunet%2Fpinki.svg)](https://npms.io/search?q=%40absolunet%2Fpinki)
 [![Travis CI](https://api.travis-ci.org/absolunet/pinki.svg?branch=master)](https://travis-ci.org/absolunet/pinki/builds)
-[![Code style ESLint](https://img.shields.io/badge/code_style-@absolunet/core-659d32.svg)](https://github.com/absolunet/eslint-config-core)
+[![Code style ESLint](https://img.shields.io/badge/code_style-@absolunet/library-659d32.svg)](https://github.com/absolunet/eslint-config)
 
 
 #### Pinky Promises
@@ -26,18 +25,11 @@
 $ npm install @absolunet/pinki
 ```
 
-or
-
-```shell
-$ bower install pinki
-```
-
-
 ## Usage
 
 ```js
 // Node.js
-const { pinki } = require('pinki');
+const pinki = require('@absolunet/pinki');
 
 // Browser
 // Load PubSubJs via bower_components
@@ -45,6 +37,7 @@ const { pinki } = require('pinki');
 const { pinki } = window;
 
 
+// Messages
 pinki.message.publish('alpha', 'Yeah!');
 
 pinki.message.subscribe('alpha', (data) => {

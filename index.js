@@ -1,37 +1,23 @@
 //--------------------------------------------------------
 //-- pinki
 //--------------------------------------------------------
-/* eslint-disable class-methods-use-this */
 
-import Message from './lib/message.js';
-import Vow     from './lib/vow.js';
+import Message from './lib/message';
+import Vow     from './lib/vow';
 
-
-//-- Load vendor libriaries
-const RSVP = require('rsvp');  // eslint-disable-line no-undef
+const RSVP = require('rsvp');
 
 
-
-
-
-
-//-- Main
 class Pinki {
 
-
-	//-- Promise
 	get Promise() {
 		return RSVP.Promise;
 	}
 
-
-	//-- Message
 	get message() {
 		return Message;
 	}
 
-
-	//-- Vow
 	get vow() {
 		return Vow;
 	}
@@ -39,5 +25,4 @@ class Pinki {
 }
 
 
-//-- Publish
 export default new Pinki();

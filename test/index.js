@@ -3,12 +3,13 @@
 //--------------------------------------------------------
 'use strict';
 
-const ava    = require('ava');
-const tester = require('@absolunet/tester');
+const tester        = require('@absolunet/tester');
+const { ava: test } = tester;
 
-const PubSub    = require('pubsub-js');
-const RSVP      = require('rsvp');
-const { pinki } = require('../dist/node');
+const PubSub = require('pubsub-js');
+const RSVP   = require('rsvp');
+const pinki  = require('../dist/node');
+
 
 const randomTopic = () => {
 	global.___randomTopic___ = global.___randomTopic___ || 'random--';
@@ -31,7 +32,7 @@ tester.npmPackage.validateLibrary();
 
 
 //-- Check RSVP.Promise matching
-ava.test('Matching: pinki.Promise is identical to RSVP.Promise', (t) => {
+test('Matching: pinki.Promise is identical to RSVP.Promise', (t) => {
 	t.is(pinki.Promise, RSVP.Promise);
 });
 
@@ -41,15 +42,15 @@ ava.test('Matching: pinki.Promise is identical to RSVP.Promise', (t) => {
 
 
 //-- Check direct pub/sub
-ava.test.cb('Message: Publish before subscribe and execute', (t) => {
+test.cb('Message: Publish before subscribe and execute', (t) => {
 	t.plan(2);
 
 	const topic = randomTopic();
 
 	pinki.message.publish(topic, 'thx');
 
-	pinki.message.subscribe(topic, (msg, data) => {
-		t.is(msg, topic);
+	pinki.message.subscribe(topic, (message, data) => {
+		t.is(message, topic);
 		t.is(data, 'thx');
 	});
 
@@ -59,17 +60,17 @@ ava.test.cb('Message: Publish before subscribe and execute', (t) => {
 });
 
 
-ava.test.cb('Message: Publish before subscribe and no execute', (t) => {
+test.cb('Message: Publish before subscribe and no execute', (t) => {
 	t.plan(0);
 
 	const topic = randomTopic();
 
 	pinki.message.publish(topic, 'thx');
 
-	pinki.message.subscribe(topic, (msg, data) => {
-		t.is(msg, topic);
+	pinki.message.subscribe(topic, (message, data) => {
+		t.is(message, topic);
 		t.is(data, 'thx');
-	}, { executePrevious:false });
+	}, { executePrevious: false });
 
 	setTimeout(() => {
 		t.end();
@@ -77,13 +78,13 @@ ava.test.cb('Message: Publish before subscribe and no execute', (t) => {
 });
 
 
-ava.test.cb('Message: Publish after subscribe', (t) => {
+test.cb('Message: Publish after subscribe', (t) => {
 	t.plan(2);
 
 	const topic = randomTopic();
 
-	pinki.message.subscribe(topic, (msg, data) => {
-		t.is(msg, topic);
+	pinki.message.subscribe(topic, (message, data) => {
+		t.is(message, topic);
 		t.is(data, 'thx');
 	});
 
@@ -95,15 +96,15 @@ ava.test.cb('Message: Publish after subscribe', (t) => {
 });
 
 
-ava.test.cb('Message: Publish before and after subscribe and execute', (t) => {
+test.cb('Message: Publish before and after subscribe and execute', (t) => {
 	t.plan(4);
 
 	const topic = randomTopic();
 
 	pinki.message.publish(topic, 'thx');
 
-	pinki.message.subscribe(topic, (msg, data) => {
-		t.is(msg, topic);
+	pinki.message.subscribe(topic, (message, data) => {
+		t.is(message, topic);
 		t.true(data === 'thx' || data === 'thx2');
 	});
 
@@ -115,17 +116,17 @@ ava.test.cb('Message: Publish before and after subscribe and execute', (t) => {
 });
 
 
-ava.test.cb('Message: Publish before and after subscribe and no execute', (t) => {
+test.cb('Message: Publish before and after subscribe and no execute', (t) => {
 	t.plan(2);
 
 	const topic = randomTopic();
 
 	pinki.message.publish(topic, 'thx');
 
-	pinki.message.subscribe(topic, (msg, data) => {
-		t.is(msg, topic);
+	pinki.message.subscribe(topic, (message, data) => {
+		t.is(message, topic);
 		t.true(data === 'thx2');
-	}, { executePrevious:false });
+	}, { executePrevious: false });
 
 	pinki.message.publish(topic, 'thx2');
 
@@ -140,7 +141,7 @@ ava.test.cb('Message: Publish before and after subscribe and no execute', (t) =>
 
 
 //-- Check hierarchical addressing pub/sub
-ava.test.cb('Message: Hierarchical publish before subscribe and execute', (t) => {
+test.cb('Message: Hierarchical publish before subscribe and execute', (t) => {
 	t.plan(2);
 
 	const topic    = randomTopic();
@@ -148,8 +149,8 @@ ava.test.cb('Message: Hierarchical publish before subscribe and execute', (t) =>
 
 	pinki.message.publish(subTopic, 'thx');
 
-	pinki.message.subscribe(topic, (msg, data) => {
-		t.is(msg, subTopic);
+	pinki.message.subscribe(topic, (message, data) => {
+		t.is(message, subTopic);
 		t.is(data, 'thx');
 	});
 
@@ -159,7 +160,7 @@ ava.test.cb('Message: Hierarchical publish before subscribe and execute', (t) =>
 });
 
 
-ava.test.cb('Message: Hierarchical publish before subscribe and no execute', (t) => {
+test.cb('Message: Hierarchical publish before subscribe and no execute', (t) => {
 	t.plan(0);
 
 	const topic    = randomTopic();
@@ -167,10 +168,10 @@ ava.test.cb('Message: Hierarchical publish before subscribe and no execute', (t)
 
 	pinki.message.publish(subTopic, 'thx');
 
-	pinki.message.subscribe(topic, (msg, data) => {
-		t.is(msg, subTopic);
+	pinki.message.subscribe(topic, (message, data) => {
+		t.is(message, subTopic);
 		t.is(data, 'thx');
-	}, { executePrevious:false });
+	}, { executePrevious: false });
 
 	setTimeout(() => {
 		t.end();
@@ -178,14 +179,14 @@ ava.test.cb('Message: Hierarchical publish before subscribe and no execute', (t)
 });
 
 
-ava.test.cb('Message: Hierarchical publish after subscribe', (t) => {
+test.cb('Message: Hierarchical publish after subscribe', (t) => {
 	t.plan(2);
 
 	const topic    = randomTopic();
 	const subTopic = `${topic}.alpha`;
 
-	pinki.message.subscribe(topic, (msg, data) => {
-		t.is(msg, subTopic);
+	pinki.message.subscribe(topic, (message, data) => {
+		t.is(message, subTopic);
 		t.is(data, 'thx');
 	});
 
@@ -197,7 +198,7 @@ ava.test.cb('Message: Hierarchical publish after subscribe', (t) => {
 });
 
 
-ava.test.cb('Message: Hierarchical publish before and after subscribe and execute', (t) => {
+test.cb('Message: Hierarchical publish before and after subscribe and execute', (t) => {
 	t.plan(4);
 
 	const topic    = randomTopic();
@@ -205,8 +206,8 @@ ava.test.cb('Message: Hierarchical publish before and after subscribe and execut
 
 	pinki.message.publish(subTopic, 'thx');
 
-	pinki.message.subscribe(topic, (msg, data) => {
-		t.is(msg, subTopic);
+	pinki.message.subscribe(topic, (message, data) => {
+		t.is(message, subTopic);
 		t.true(data === 'thx' || data === 'thx2');
 	});
 
@@ -218,7 +219,7 @@ ava.test.cb('Message: Hierarchical publish before and after subscribe and execut
 });
 
 
-ava.test.cb('Message: Hierarchical publish before and after subscribe and no execute', (t) => {
+test.cb('Message: Hierarchical publish before and after subscribe and no execute', (t) => {
 	t.plan(2);
 
 	const topic    = randomTopic();
@@ -226,10 +227,10 @@ ava.test.cb('Message: Hierarchical publish before and after subscribe and no exe
 
 	pinki.message.publish(subTopic, 'thx');
 
-	pinki.message.subscribe(topic, (msg, data) => {
-		t.is(msg, subTopic);
+	pinki.message.subscribe(topic, (message, data) => {
+		t.is(message, subTopic);
 		t.true(data === 'thx2');
-	}, { executePrevious:false });
+	}, { executePrevious: false });
 
 	pinki.message.publish(subTopic, 'thx2');
 
@@ -244,7 +245,7 @@ ava.test.cb('Message: Hierarchical publish before and after subscribe and no exe
 
 
 //-- Check check if `list` returns an array of object
-ava.test('Message: `list` returns an array of object', (t) => {
+test('Message: `list` returns an array of object', (t) => {
 	return Promise.resolve().then(() => {
 		const messages = pinki.message.list;
 
@@ -262,7 +263,7 @@ ava.test('Message: `list` returns an array of object', (t) => {
 
 
 //-- Check PubSub.unsubscribe matching
-ava.test('Matching: pinki.message.unsubscribe is identical to PubSub.unsubscribe', (t) => {
+test('Matching: pinki.message.unsubscribe is identical to PubSub.unsubscribe', (t) => {
 	t.is(pinki.message.unsubscribe, PubSub.unsubscribe);
 });
 
@@ -272,7 +273,7 @@ ava.test('Matching: pinki.message.unsubscribe is identical to PubSub.unsubscribe
 
 
 //-- Validate vow names
-ava.test('Vow: Check for invalid vow characters', (t) => {
+test('Vow: Check for invalid vow characters', (t) => {
 	const invalid = `/=!@#$%?&*()_+|¡@£€∞ {}[]¬^¨~;:°«»,'"<>àÀâÂçÇéÉèÈëËêÊôÔüÜùÙ\\`.split('');
 
 	invalid.forEach((char) => {
@@ -286,7 +287,7 @@ ava.test('Vow: Check for invalid vow characters', (t) => {
 });
 
 
-ava.test('Vow: Check for valid vow characters', (t) => {
+test('Vow: Check for valid vow characters', (t) => {
 	const valid = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.`.split('');
 
 	valid.forEach((char) => {
@@ -302,7 +303,7 @@ ava.test('Vow: Check for valid vow characters', (t) => {
 
 
 //-- Check single `when`
-ava.test.cb('Vow: Single `when` with `fulfill` after', (t) => {
+test.cb('Vow: Single `when` with `fulfill` after', (t) => {
 	const topic = randomTopic();
 
 	pinki.vow.when(topic).then(([data]) => {
@@ -314,7 +315,7 @@ ava.test.cb('Vow: Single `when` with `fulfill` after', (t) => {
 });
 
 
-ava.test.cb('Vow: Single `when` with `fulfill` before', (t) => {
+test.cb('Vow: Single `when` with `fulfill` before', (t) => {
 	const topic = randomTopic();
 
 	pinki.vow.fulfill(topic, 'thx');
@@ -326,7 +327,7 @@ ava.test.cb('Vow: Single `when` with `fulfill` before', (t) => {
 });
 
 
-ava.test.cb('Vow: Single `when` with `break` after', (t) => {
+test.cb('Vow: Single `when` with `break` after', (t) => {
 	const topic = randomTopic();
 
 	pinki.vow.when(topic).catch((error) => {
@@ -338,7 +339,7 @@ ava.test.cb('Vow: Single `when` with `break` after', (t) => {
 });
 
 
-ava.test.cb('Vow: Single `when` with `break` before', (t) => {
+test.cb('Vow: Single `when` with `break` before', (t) => {
 	const topic = randomTopic();
 
 	pinki.vow.break(topic, 'noooooo');
@@ -355,7 +356,7 @@ ava.test.cb('Vow: Single `when` with `break` before', (t) => {
 
 
 //-- Check multiple `when` with `fulfill` */
-ava.test.cb('Vow: Multiple `when` with `fulfill` after', (t) => {
+test.cb('Vow: Multiple `when` with `fulfill` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -370,7 +371,7 @@ ava.test.cb('Vow: Multiple `when` with `fulfill` after', (t) => {
 });
 
 
-ava.test.cb('Vow: Multiple `when` with `fulfill` before/after', (t) => {
+test.cb('Vow: Multiple `when` with `fulfill` before/after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -386,7 +387,7 @@ ava.test.cb('Vow: Multiple `when` with `fulfill` before/after', (t) => {
 });
 
 
-ava.test.cb('Vow: Multiple `when` with `fulfill` before', (t) => {
+test.cb('Vow: Multiple `when` with `fulfill` before', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -407,7 +408,7 @@ ava.test.cb('Vow: Multiple `when` with `fulfill` before', (t) => {
 
 
 //-- Check multiple `when` with `break`
-ava.test.cb('Vow: Multiple `when` with `break` after', (t) => {
+test.cb('Vow: Multiple `when` with `break` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -421,7 +422,7 @@ ava.test.cb('Vow: Multiple `when` with `break` after', (t) => {
 });
 
 
-ava.test.cb('Vow: Multiple `when` with `break` before/after', (t) => {
+test.cb('Vow: Multiple `when` with `break` before/after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -436,7 +437,7 @@ ava.test.cb('Vow: Multiple `when` with `break` before/after', (t) => {
 });
 
 
-ava.test.cb('Vow: Multiple `when` with `break` before', (t) => {
+test.cb('Vow: Multiple `when` with `break` before', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -456,7 +457,7 @@ ava.test.cb('Vow: Multiple `when` with `break` before', (t) => {
 
 
 //-- Check multiple `when` with `fulfill` and `break`
-ava.test.cb('Vow: Multiple `when` with `fulfill`/`break` after', (t) => {
+test.cb('Vow: Multiple `when` with `fulfill`/`break` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -470,7 +471,7 @@ ava.test.cb('Vow: Multiple `when` with `fulfill`/`break` after', (t) => {
 });
 
 
-ava.test.cb('Vow: Multiple `when` with `break`/`fulfill` after', (t) => {
+test.cb('Vow: Multiple `when` with `break`/`fulfill` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -484,7 +485,7 @@ ava.test.cb('Vow: Multiple `when` with `break`/`fulfill` after', (t) => {
 });
 
 
-ava.test.cb('Vow: Multiple `when` with `fulfill` before and `break` after', (t) => {
+test.cb('Vow: Multiple `when` with `fulfill` before and `break` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -499,7 +500,7 @@ ava.test.cb('Vow: Multiple `when` with `fulfill` before and `break` after', (t) 
 });
 
 
-ava.test.cb('Vow: Multiple `when` with `break` before and `fulfill` after', (t) => {
+test.cb('Vow: Multiple `when` with `break` before and `fulfill` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -514,7 +515,7 @@ ava.test.cb('Vow: Multiple `when` with `break` before and `fulfill` after', (t) 
 });
 
 
-ava.test.cb('Vow: Multiple `when` with `fulfill`/`break` before', (t) => {
+test.cb('Vow: Multiple `when` with `fulfill`/`break` before', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -528,7 +529,7 @@ ava.test.cb('Vow: Multiple `when` with `fulfill`/`break` before', (t) => {
 });
 
 
-ava.test.cb('Vow: Multiple `when` with `break`/`fulfill` before', (t) => {
+test.cb('Vow: Multiple `when` with `break`/`fulfill` before', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
@@ -547,7 +548,7 @@ ava.test.cb('Vow: Multiple `when` with `break`/`fulfill` before', (t) => {
 
 
 //-- Check check if `list` returns an array of strings
-ava.test('Vow: `list` returns an array of strings', (t) => {
+test('Vow: `list` returns an array of strings', (t) => {
 	return Promise.resolve().then(() => {
 		const vows = pinki.vow.list;
 

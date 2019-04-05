@@ -1,42 +1,36 @@
 //--------------------------------------------------------
 //-- webpack configuration
 //--------------------------------------------------------
-'use strict';
+/* globals __dirname, module */
 
-const merge          = require('lodash.merge');
-const libraryBuilder = require('@absolunet/library-builder');
+const LibraryBuilder = require('@absolunet/library-builder');
 
-
-
-
-
-
-libraryBuilder.setRoot(__dirname);
+const builder = new LibraryBuilder({
+	name: 'pinki',
+	root: __dirname
+});
 
 
 //-- Node.js
-const nodeConfig = merge({}, libraryBuilder.config.node, {
+const nodeExternals = {
 	externals: [
 		'pubsub-js',
 		'rsvp'
 	]
-});
+};
 
 
-//-- Web
-const webExternals = {
+//-- Browser
+const browserExternals = {
 	externals: {
-		'pubsub-js': 'PubSub',
-		'rsvp':      'RSVP'
+		'pubsub-js': 'window.PubSub',
+		'rsvp':      'window.RSVP'
 	}
 };
 
-const webConfig    = merge({}, libraryBuilder.config.web,    webExternals);
-const webES5Config = merge({}, libraryBuilder.config.webES5, webExternals);
 
-
-
-
-
-
-module.exports = [nodeConfig, webConfig, webES5Config];
+module.exports = [
+	builder.config.mergeWithNode(nodeExternals),
+	builder.config.mergeWithBrowser(browserExternals),
+	builder.config.mergeWithBrowserES5(browserExternals)
+];

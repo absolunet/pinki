@@ -1,1 +1,1 @@
-extends: '@absolunet/node'
+extends: '@absolunet/library'
