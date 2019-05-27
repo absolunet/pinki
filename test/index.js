@@ -7,7 +7,6 @@ const tester        = require('@absolunet/tester');
 const { ava: test } = tester;
 
 const PubSub = require('pubsub-js');
-const RSVP   = require('rsvp');
 const pinki  = require('../dist/node');
 
 
@@ -25,16 +24,6 @@ const randomTopic = () => {
 
 //-- Linter
 tester.npmPackage.validateLibrary();
-
-
-
-
-
-
-//-- Check RSVP.Promise matching
-test('Matching: pinki.Promise is identical to RSVP.Promise', (t) => {
-	t.is(pinki.Promise, RSVP.Promise);
-});
 
 
 

@@ -16,7 +16,7 @@
 
 ## Dependencies / Implements
 - [PubSubJS](https://github.com/mroderick/PubSubJS) - Dependency free publish/subscribe for JavaScript
-- [RSVP.js](https://github.com/tildeio/rsvp.js) - A tiny implementation of Promises/A+
+- [RSVP.js](https://github.com/tildeio/rsvp.js) - A tiny implementation of Promises/A+ with deferred objects
 
 
 ## Install
@@ -70,15 +70,6 @@ setTimeout(() => {
 // Outputs:
 // { gamma:'Yeah!', delta:'Yessir!' }
 ```
-
-
-<br>
-
-## API - Libraries mapping
-
-### Promise
-Maps [`RSVP.Promise`](https://github.com/tildeio/rsvp.js#basic-usage).
-
 
 
 <br>

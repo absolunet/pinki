@@ -113,14 +113,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const RSVP = __webpack_require__(5);
-
 
 class Pinki {
-
-	get Promise() {
-		return RSVP.Promise;
-	}
 
 	get message() {
 		return _lib_message__WEBPACK_IMPORTED_MODULE_0__["default"];
