@@ -24,17 +24,21 @@
     "url": "https://github.com/absolunet/pinki/issues"
   },
   "engines": {
-    "node": ">= 11.13.0"
+    "node": ">= 12.1.0"
   },
   "main": "dist/node.js",
   "browser": "dist/browser.js",
   "scripts": {
-    "build": "node node_modules/@absolunet/library-builder/bin/build.js",
-    "test": "ava test"
+    "test": "ava test",
+    "installer": "node manager.js --task=installer",
+    "outdated": "node manager.js --task=outdated",
+    "build": "node manager.js --task=build",
+    "deploy": "node manager.js --task=deploy"
   },
   "devDependencies": {
     "@absolunet/library-builder": "1.2.0",
-    "@absolunet/tester": "2.6.3"
+    "@absolunet/manager": "1.1.0",
+    "@absolunet/tester": "2.6.8"
   },
   "dependencies": {
     "pubsub-js": "^1.7.0",

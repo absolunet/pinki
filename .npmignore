@@ -8,4 +8,5 @@ test
 .gitignore
 .travis.yml
 index.js
+manager.js
 webpack.config.js
