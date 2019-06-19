@@ -24,7 +24,7 @@
     "url": "https://github.com/absolunet/pinki/issues"
   },
   "engines": {
-    "node": ">= 12.1.0"
+    "node": ">= 12.4.0"
   },
   "main": "dist/node.js",
   "browser": "dist/browser.js",
@@ -42,6 +42,6 @@
   },
   "dependencies": {
     "pubsub-js": "^1.7.0",
-    "rsvp": "^4.8.4"
+    "rsvp": "^4.8.5"
   }
 }

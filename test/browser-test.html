@@ -36,7 +36,7 @@
 	//pinki.vow.break('ccc', 'breakC');
 
 
-	pinki.vow.when('aaa', 'bbb')
+	pinki.vow.when(['aaa', 'bbb'])
 		.then(([dataA, dataB]) => {
 			console.log(`aaabbb - ${dataA} - ${dataB}`);
 		})
@@ -46,7 +46,7 @@
 	;
 
 
-	pinki.vow.when('aaa', 'bbb')
+	pinki.vow.when(['aaa', 'bbb'])
 		.then(([dataA, dataB]) => {
 			console.log(`aaabbb2 - ${dataA} - ${dataB}`);
 		})
@@ -56,7 +56,7 @@
 	;
 
 
-	pinki.vow.when('bbb', 'ccc')
+	pinki.vow.when(['bbb', 'ccc'])
 		.then(([dataB, dataC]) => {
 			console.log(`bbbccc - ${dataB} - ${dataC}`);
 		})
@@ -67,7 +67,7 @@
 
 
 	pinki.vow.when('ccc')
-		.then(([dataC]) => {
+		.then((dataC) => {
 			console.log(`ccc - ${dataC}`);
 		})
 		.catch((error) => {
@@ -93,7 +93,7 @@
 
 
 	setTimeout(() => {
-		pinki.vow.when('aaa', 'ccc')
+		pinki.vow.when(['aaa', 'ccc'])
 			.then(([dataA, dataC]) => {
 				console.log(`aaaccc - ${dataA} - ${dataC}`);
 			})

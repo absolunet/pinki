@@ -6,7 +6,6 @@
 const tester        = require('@absolunet/tester');
 const { ava: test } = tester;
 
-const PubSub = require('pubsub-js');
 const pinki  = require('../dist/node');
 
 
@@ -251,16 +250,6 @@ test('Message: `list` returns an array of object', (t) => {
 
 
 
-//-- Check PubSub.unsubscribe matching
-test('Matching: pinki.message.unsubscribe is identical to PubSub.unsubscribe', (t) => {
-	t.is(pinki.message.unsubscribe, PubSub.unsubscribe);
-});
-
-
-
-
-
-
 //-- Validate vow names
 test('Vow: Check for invalid vow characters', (t) => {
 	const invalid = `/=!@#$%?&*()_+|¡@£€∞ {}[]¬^¨~;:°«»,'"<>àÀâÂçÇéÉèÈëËêÊôÔüÜùÙ\\`.split('');
@@ -295,7 +284,7 @@ test('Vow: Check for valid vow characters', (t) => {
 test.cb('Vow: Single `when` with `fulfill` after', (t) => {
 	const topic = randomTopic();
 
-	pinki.vow.when(topic).then(([data]) => {
+	pinki.vow.when(topic).then((data) => {
 		t.is(data, 'thx');
 		t.end();
 	});
@@ -309,7 +298,7 @@ test.cb('Vow: Single `when` with `fulfill` before', (t) => {
 
 	pinki.vow.fulfill(topic, 'thx');
 
-	pinki.vow.when(topic).then(([data]) => {
+	pinki.vow.when(topic).then((data) => {
 		t.is(data, 'thx');
 		t.end();
 	});
@@ -349,7 +338,7 @@ test.cb('Vow: Multiple `when` with `fulfill` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.vow.when(topic1, topic2).then(([data1, data2]) => {
+	pinki.vow.when([topic1, topic2]).then(([data1, data2]) => {
 		t.is(data1, 'thx1');
 		t.is(data2, 'thx2');
 		t.end();
@@ -366,7 +355,7 @@ test.cb('Vow: Multiple `when` with `fulfill` before/after', (t) => {
 
 	pinki.vow.fulfill(topic1, 'thx1');
 
-	pinki.vow.when(topic1, topic2).then(([data1, data2]) => {
+	pinki.vow.when([topic1, topic2]).then(([data1, data2]) => {
 		t.is(data1, 'thx1');
 		t.is(data2, 'thx2');
 		t.end();
@@ -383,7 +372,7 @@ test.cb('Vow: Multiple `when` with `fulfill` before', (t) => {
 	pinki.vow.fulfill(topic1, 'thx1');
 	pinki.vow.fulfill(topic2, 'thx2');
 
-	pinki.vow.when(topic1, topic2).then(([data1, data2]) => {
+	pinki.vow.when([topic1, topic2]).then(([data1, data2]) => {
 		t.is(data1, 'thx1');
 		t.is(data2, 'thx2');
 		t.end();
@@ -401,7 +390,7 @@ test.cb('Vow: Multiple `when` with `break` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.vow.when(topic1, topic2).catch((error) => {
+	pinki.vow.when([topic1, topic2]).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
@@ -417,7 +406,7 @@ test.cb('Vow: Multiple `when` with `break` before/after', (t) => {
 
 	pinki.vow.break(topic1, 'noooooo');
 
-	pinki.vow.when(topic1, topic2).catch((error) => {
+	pinki.vow.when([topic1, topic2]).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
@@ -433,7 +422,7 @@ test.cb('Vow: Multiple `when` with `break` before', (t) => {
 	pinki.vow.break(topic1, 'noooooo');
 	pinki.vow.break(topic2, 'noooooo');
 
-	pinki.vow.when(topic1, topic2).catch((error) => {
+	pinki.vow.when([topic1, topic2]).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
@@ -450,7 +439,7 @@ test.cb('Vow: Multiple `when` with `fulfill`/`break` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.vow.when(topic1, topic2).catch((error) => {
+	pinki.vow.when([topic1, topic2]).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
@@ -464,7 +453,7 @@ test.cb('Vow: Multiple `when` with `break`/`fulfill` after', (t) => {
 	const topic1 = randomTopic();
 	const topic2 = randomTopic();
 
-	pinki.vow.when(topic1, topic2).catch((error) => {
+	pinki.vow.when([topic1, topic2]).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
@@ -480,7 +469,7 @@ test.cb('Vow: Multiple `when` with `fulfill` before and `break` after', (t) => {
 
 	pinki.vow.fulfill(topic1, 'thx1');
 
-	pinki.vow.when(topic1, topic2).catch((error) => {
+	pinki.vow.when([topic1, topic2]).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
@@ -495,7 +484,7 @@ test.cb('Vow: Multiple `when` with `break` before and `fulfill` after', (t) => {
 
 	pinki.vow.break(topic1, 'noooooo');
 
-	pinki.vow.when(topic1, topic2).catch((error) => {
+	pinki.vow.when([topic1, topic2]).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
@@ -511,7 +500,7 @@ test.cb('Vow: Multiple `when` with `fulfill`/`break` before', (t) => {
 	pinki.vow.fulfill(topic1, 'thx1');
 	pinki.vow.break(topic2, 'noooooo');
 
-	pinki.vow.when(topic1, topic2).catch((error) => {
+	pinki.vow.when([topic1, topic2]).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
@@ -525,7 +514,7 @@ test.cb('Vow: Multiple `when` with `break`/`fulfill` before', (t) => {
 	pinki.vow.break(topic1, 'noooooo');
 	pinki.vow.fulfill(topic2, 'thx2');
 
-	pinki.vow.when(topic1, topic2).catch((error) => {
+	pinki.vow.when([topic1, topic2]).catch((error) => {
 		t.is(error, 'noooooo');
 		t.end();
 	});
