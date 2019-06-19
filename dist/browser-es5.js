@@ -106,8 +106,8 @@ window["pinki"] = __webpack_require__(1).default;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _lib_message__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(44);
-/* harmony import */ var _lib_vow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(59);
+/* harmony import */ var _lib_message__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(46);
+/* harmony import */ var _lib_vow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(61);
 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -116,11 +116,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-//--------------------------------------------------------
-//-- pinki
-//--------------------------------------------------------
+/**
+ * Asynchronous libraries wrapper
+ * @module pinki
+ */
 
 
+/** Main entry point */
 
 var Pinki =
 /*#__PURE__*/
@@ -131,9 +133,21 @@ function () {
 
   _createClass(Pinki, [{
     key: "message",
+
+    /**
+     * Message
+     * @readonly
+     * @property {object} message
+     */
     get: function get() {
       return _lib_message__WEBPACK_IMPORTED_MODULE_1__["default"];
     }
+    /**
+     * Vow
+     * @readonly
+     * @property {object} vow
+     */
+
   }, {
     key: "vow",
     get: function get() {
@@ -171,7 +185,7 @@ var hide = __webpack_require__(20);
 var redefine = __webpack_require__(23);
 var setGlobal = __webpack_require__(25);
 var copyConstructorProperties = __webpack_require__(33);
-var isForced = __webpack_require__(43);
+var isForced = __webpack_require__(45);
 
 /*
   options.target      - name of the target object
@@ -282,6 +296,8 @@ var IE8_DOM_DEFINE = __webpack_require__(18);
 
 var nativeGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 
+// `Object.getOwnPropertyDescriptor` method
+// https://tc39.github.io/ecma262/#sec-object.getownpropertydescriptor
 exports.f = DESCRIPTORS ? nativeGetOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
   O = toIndexedObject(O);
   P = toPrimitive(P, true);
@@ -329,6 +345,8 @@ var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 // Nashorn ~ JDK8 bug
 var NASHORN_BUG = getOwnPropertyDescriptor && !nativePropertyIsEnumerable.call({ 1: 2 }, 1);
 
+// `Object.prototype.propertyIsEnumerable` method implementation
+// https://tc39.github.io/ecma262/#sec-object.prototype.propertyisenumerable
 exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
   var descriptor = getOwnPropertyDescriptor(this, V);
   return !!descriptor && descriptor.enumerable;
@@ -366,12 +384,12 @@ module.exports = function (it) {
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
 var fails = __webpack_require__(8);
 var classof = __webpack_require__(13);
 
 var split = ''.split;
 
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
 module.exports = fails(function () {
   // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
   // eslint-disable-next-line no-prototype-builtins
@@ -410,15 +428,16 @@ module.exports = function (it) {
 
 var isObject = __webpack_require__(16);
 
-// 7.1.1 ToPrimitive(input [, PreferredType])
+// `ToPrimitive` abstract operation
+// https://tc39.github.io/ecma262/#sec-toprimitive
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
+module.exports = function (input, PREFERRED_STRING) {
+  if (!isObject(input)) return input;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (PREFERRED_STRING && typeof (fn = input.toString) == 'function' && !isObject(val = fn.call(input))) return val;
+  if (typeof (fn = input.valueOf) == 'function' && !isObject(val = fn.call(input))) return val;
+  if (!PREFERRED_STRING && typeof (fn = input.toString) == 'function' && !isObject(val = fn.call(input))) return val;
   throw TypeError("Can't convert object to primitive value");
 };
 
@@ -468,10 +487,10 @@ var isObject = __webpack_require__(16);
 
 var document = global.document;
 // typeof document.createElement is 'object' in old IE
-var exist = isObject(document) && isObject(document.createElement);
+var EXISTS = isObject(document) && isObject(document.createElement);
 
 module.exports = function (it) {
-  return exist ? document.createElement(it) : {};
+  return EXISTS ? document.createElement(it) : {};
 };
 
 
@@ -502,6 +521,8 @@ var toPrimitive = __webpack_require__(15);
 
 var nativeDefineProperty = Object.defineProperty;
 
+// `Object.defineProperty` method
+// https://tc39.github.io/ecma262/#sec-object.defineproperty
 exports.f = DESCRIPTORS ? nativeDefineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPrimitive(P, true);
@@ -726,7 +747,7 @@ var id = 0;
 var postfix = Math.random();
 
 module.exports = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + postfix).toString(36));
+  return 'Symbol(' + String(key === undefined ? '' : key) + ')_' + (++id + postfix).toString(36);
 };
 
 
@@ -761,15 +782,13 @@ module.exports = function (target, source) {
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(4);
-var getOwnPropertyNamesModule = __webpack_require__(35);
-var getOwnPropertySymbolsModule = __webpack_require__(42);
+var getBuiltIn = __webpack_require__(35);
+var getOwnPropertyNamesModule = __webpack_require__(37);
+var getOwnPropertySymbolsModule = __webpack_require__(44);
 var anObject = __webpack_require__(22);
 
-var Reflect = global.Reflect;
-
 // all object keys, includes non-enumerable and symbols
-module.exports = Reflect && Reflect.ownKeys || function ownKeys(it) {
+module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
   var keys = getOwnPropertyNamesModule.f(anObject(it));
   var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
   return getOwnPropertySymbols ? keys.concat(getOwnPropertySymbols(it)) : keys;
@@ -780,14 +799,16 @@ module.exports = Reflect && Reflect.ownKeys || function ownKeys(it) {
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var internalObjectKeys = __webpack_require__(36);
-var enumBugKeys = __webpack_require__(41);
+var path = __webpack_require__(36);
+var global = __webpack_require__(4);
 
-var hiddenKeys = enumBugKeys.concat('length', 'prototype');
+var aFunction = function (variable) {
+  return typeof variable == 'function' ? variable : undefined;
+};
 
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
-  return internalObjectKeys(O, hiddenKeys);
+module.exports = function (namespace, method) {
+  return arguments.length < 2 ? aFunction(path[namespace]) || aFunction(global[namespace])
+    : path[namespace] && path[namespace][method] || global[namespace] && global[namespace][method];
 };
 
 
@@ -795,12 +816,33 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(4);
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var internalObjectKeys = __webpack_require__(38);
+var enumBugKeys = __webpack_require__(43);
+
+var hiddenKeys = enumBugKeys.concat('length', 'prototype');
+
+// `Object.getOwnPropertyNames` method
+// https://tc39.github.io/ecma262/#sec-object.getownpropertynames
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+  return internalObjectKeys(O, hiddenKeys);
+};
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var has = __webpack_require__(17);
 var toIndexedObject = __webpack_require__(11);
-var arrayIncludes = __webpack_require__(37);
+var indexOf = __webpack_require__(39).indexOf;
 var hiddenKeys = __webpack_require__(32);
-
-var arrayIndexOf = arrayIncludes(false);
 
 module.exports = function (object, names) {
   var O = toIndexedObject(object);
@@ -810,26 +852,22 @@ module.exports = function (object, names) {
   for (key in O) !has(hiddenKeys, key) && has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
   while (names.length > i) if (has(O, key = names[i++])) {
-    ~arrayIndexOf(result, key) || result.push(key);
+    ~indexOf(result, key) || result.push(key);
   }
   return result;
 };
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toIndexedObject = __webpack_require__(11);
-var toLength = __webpack_require__(38);
-var toAbsoluteIndex = __webpack_require__(40);
+var toLength = __webpack_require__(40);
+var toAbsoluteIndex = __webpack_require__(42);
 
 // `Array.prototype.{ indexOf, includes }` methods implementation
-// false -> Array#indexOf
-// https://tc39.github.io/ecma262/#sec-array.prototype.indexof
-// true  -> Array#includes
-// https://tc39.github.io/ecma262/#sec-array.prototype.includes
-module.exports = function (IS_INCLUDES) {
+var createMethod = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
     var O = toIndexedObject($this);
     var length = toLength(O.length);
@@ -842,18 +880,27 @@ module.exports = function (IS_INCLUDES) {
       // eslint-disable-next-line no-self-compare
       if (value != value) return true;
     // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
+    } else for (;length > index; index++) {
+      if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
 };
 
+module.exports = {
+  // `Array.prototype.includes` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.includes
+  includes: createMethod(true),
+  // `Array.prototype.indexOf` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.indexof
+  indexOf: createMethod(false)
+};
+
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(39);
+var toInteger = __webpack_require__(41);
 
 var min = Math.min;
 
@@ -865,7 +912,7 @@ module.exports = function (argument) {
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports) {
 
 var ceil = Math.ceil;
@@ -879,10 +926,10 @@ module.exports = function (argument) {
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(39);
+var toInteger = __webpack_require__(41);
 
 var max = Math.max;
 var min = Math.min;
@@ -897,7 +944,7 @@ module.exports = function (index, length) {
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports) {
 
 // IE8- don't enum bug keys
@@ -913,14 +960,14 @@ module.exports = [
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports) {
 
 exports.f = Object.getOwnPropertySymbols;
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var fails = __webpack_require__(8);
@@ -947,14 +994,14 @@ module.exports = isForced;
 
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45);
+/* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
 /* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_es_array_last_index_of__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(56);
+/* harmony import */ var core_js_modules_es_array_last_index_of__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(58);
 /* harmony import */ var core_js_modules_es_array_last_index_of__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_last_index_of__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 /* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_2__);
@@ -968,10 +1015,11 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-//--------------------------------------------------------
-//-- Message
-//--------------------------------------------------------
-var PubSub = __webpack_require__(58); //-- Private
+/**
+ * PubSubJS wrapper with goodies
+ * @module pinki/message
+ */
+var PubSub = __webpack_require__(60); //-- Private
 
 
 var messages = []; // Logic copied from https://github.com/mroderick/PubSubJS/blob/master/src/pubsub.js
@@ -989,6 +1037,8 @@ var messageHasSubscribers = function messageHasSubscribers(topic, messageTopic) 
 
   return found;
 };
+/** Message entry point */
+
 
 var Message =
 /*#__PURE__*/
@@ -999,7 +1049,15 @@ function () {
 
   _createClass(Message, [{
     key: "subscribe",
-    //-- Subscribe to a topic
+
+    /**
+     * Subscribe to a topic
+     * @param {string} topic - Topic id.
+     * @param {function} subscriber - The callback to execute.
+     * @param {object} [options] - Options
+     * @param {boolean} [options.executePrevious=true] - Execute previously published messages.
+     * @return {string} Unique token
+     */
     value: function subscribe(topic, subscriber) {
       var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
           _ref$executePrevious = _ref.executePrevious,
@@ -1017,7 +1075,13 @@ function () {
       }
 
       return PubSub.subscribe(topic, subscriber);
-    } //-- Publish a message
+    }
+    /**
+     * Publish a message
+     * @param {string} topic - Topic id.
+     * @param {*} [data] - The data.
+     * @return {boolean} Were they any subscribers already?
+     */
 
   }, {
     key: "publish",
@@ -1027,13 +1091,25 @@ function () {
         data: data
       });
       return PubSub.publish(topic, data);
-    } //-- Unsubscribe to all topic
+    }
+    /**
+     * Unsubscribe
+     * @param {string|function} value - A token, function or topic to unsubscribe from
+     * @return {boolean} Were they any subscribers?
+     */
 
   }, {
     key: "unsubscribe",
-    get: function get() {
-      return PubSub.unsubscribe;
-    } //-- Get all published messages
+    value: function unsubscribe(value) {
+      return PubSub.unsubscribe(value);
+    }
+    /**
+     * Get all published messages
+     * @readonly
+     * @property {object[]} list
+     * @property {string} list[].topic - Topic id.
+     * @property {*} list[].data - Given data.
+    	 */
 
   }, {
     key: "list",
@@ -1048,13 +1124,13 @@ function () {
 /* harmony default export */ __webpack_exports__["default"] = (new Message());
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var $ = __webpack_require__(3);
-var forEach = __webpack_require__(46);
+var forEach = __webpack_require__(48);
 
 // `Array.prototype.forEach` method
 // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
@@ -1064,63 +1140,48 @@ $({ target: 'Array', proto: true, forced: [].forEach != forEach }, {
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var arrayMethods = __webpack_require__(47);
-var sloppyArrayMethod = __webpack_require__(55);
-
-var internalForEach = arrayMethods(0);
-var SLOPPY_METHOD = sloppyArrayMethod('forEach');
+var $forEach = __webpack_require__(49).forEach;
+var sloppyArrayMethod = __webpack_require__(57);
 
 // `Array.prototype.forEach` method implementation
 // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
-module.exports = SLOPPY_METHOD ? function forEach(callbackfn /* , thisArg */) {
-  return internalForEach(this, callbackfn, arguments[1]);
+module.exports = sloppyArrayMethod('forEach') ? function forEach(callbackfn /* , thisArg */) {
+  return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
 } : [].forEach;
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var bind = __webpack_require__(48);
+var bind = __webpack_require__(50);
 var IndexedObject = __webpack_require__(12);
-var toObject = __webpack_require__(50);
-var toLength = __webpack_require__(38);
-var arraySpeciesCreate = __webpack_require__(51);
+var toObject = __webpack_require__(52);
+var toLength = __webpack_require__(40);
+var arraySpeciesCreate = __webpack_require__(53);
+
+var push = [].push;
 
 // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex }` methods implementation
-// 0 -> Array#forEach
-// https://tc39.github.io/ecma262/#sec-array.prototype.foreach
-// 1 -> Array#map
-// https://tc39.github.io/ecma262/#sec-array.prototype.map
-// 2 -> Array#filter
-// https://tc39.github.io/ecma262/#sec-array.prototype.filter
-// 3 -> Array#some
-// https://tc39.github.io/ecma262/#sec-array.prototype.some
-// 4 -> Array#every
-// https://tc39.github.io/ecma262/#sec-array.prototype.every
-// 5 -> Array#find
-// https://tc39.github.io/ecma262/#sec-array.prototype.find
-// 6 -> Array#findIndex
-// https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
-module.exports = function (TYPE, specificCreate) {
+var createMethod = function (TYPE) {
   var IS_MAP = TYPE == 1;
   var IS_FILTER = TYPE == 2;
   var IS_SOME = TYPE == 3;
   var IS_EVERY = TYPE == 4;
   var IS_FIND_INDEX = TYPE == 6;
   var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
-  var create = specificCreate || arraySpeciesCreate;
-  return function ($this, callbackfn, that) {
+  return function ($this, callbackfn, that, specificCreate) {
     var O = toObject($this);
     var self = IndexedObject(O);
     var boundFunction = bind(callbackfn, that, 3);
     var length = toLength(self.length);
     var index = 0;
+    var create = specificCreate || arraySpeciesCreate;
     var target = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
     var value, result;
     for (;length > index; index++) if (NO_HOLES || index in self) {
@@ -1132,7 +1193,7 @@ module.exports = function (TYPE, specificCreate) {
           case 3: return true;              // some
           case 5: return value;             // find
           case 6: return index;             // findIndex
-          case 2: target.push(value);       // filter
+          case 2: push.call(target, value); // filter
         } else if (IS_EVERY) return false;  // every
       }
     }
@@ -1140,12 +1201,36 @@ module.exports = function (TYPE, specificCreate) {
   };
 };
 
+module.exports = {
+  // `Array.prototype.forEach` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
+  forEach: createMethod(0),
+  // `Array.prototype.map` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.map
+  map: createMethod(1),
+  // `Array.prototype.filter` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.filter
+  filter: createMethod(2),
+  // `Array.prototype.some` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.some
+  some: createMethod(3),
+  // `Array.prototype.every` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.every
+  every: createMethod(4),
+  // `Array.prototype.find` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.find
+  find: createMethod(5),
+  // `Array.prototype.findIndex` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
+  findIndex: createMethod(6)
+};
+
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var aFunction = __webpack_require__(49);
+var aFunction = __webpack_require__(51);
 
 // optional / simple context binding
 module.exports = function (fn, that, length) {
@@ -1172,7 +1257,7 @@ module.exports = function (fn, that, length) {
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports) {
 
 module.exports = function (it) {
@@ -1183,7 +1268,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var requireObjectCoercible = __webpack_require__(14);
@@ -1196,12 +1281,12 @@ module.exports = function (argument) {
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(16);
-var isArray = __webpack_require__(52);
-var wellKnownSymbol = __webpack_require__(53);
+var isArray = __webpack_require__(54);
+var wellKnownSymbol = __webpack_require__(55);
 
 var SPECIES = wellKnownSymbol('species');
 
@@ -1222,7 +1307,7 @@ module.exports = function (originalArray, length) {
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var classof = __webpack_require__(13);
@@ -1235,13 +1320,13 @@ module.exports = Array.isArray || function isArray(arg) {
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(4);
 var shared = __webpack_require__(24);
 var uid = __webpack_require__(31);
-var NATIVE_SYMBOL = __webpack_require__(54);
+var NATIVE_SYMBOL = __webpack_require__(56);
 
 var Symbol = global.Symbol;
 var store = shared('wks');
@@ -1253,7 +1338,7 @@ module.exports = function (name) {
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var fails = __webpack_require__(8);
@@ -1266,7 +1351,7 @@ module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1283,11 +1368,11 @@ module.exports = function (METHOD_NAME, argument) {
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $ = __webpack_require__(3);
-var lastIndexOf = __webpack_require__(57);
+var lastIndexOf = __webpack_require__(59);
 
 // `Array.prototype.lastIndexOf` method
 // https://tc39.github.io/ecma262/#sec-array.prototype.lastindexof
@@ -1297,16 +1382,17 @@ $({ target: 'Array', proto: true, forced: lastIndexOf !== [].lastIndexOf }, {
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var toIndexedObject = __webpack_require__(11);
-var toInteger = __webpack_require__(39);
-var toLength = __webpack_require__(38);
-var sloppyArrayMethod = __webpack_require__(55);
+var toInteger = __webpack_require__(41);
+var toLength = __webpack_require__(40);
+var sloppyArrayMethod = __webpack_require__(57);
 
+var min = Math.min;
 var nativeLastIndexOf = [].lastIndexOf;
 var NEGATIVE_ZERO = !!nativeLastIndexOf && 1 / [1].lastIndexOf(1, -0) < 0;
 var SLOPPY_METHOD = sloppyArrayMethod('lastIndexOf');
@@ -1319,32 +1405,32 @@ module.exports = (NEGATIVE_ZERO || SLOPPY_METHOD) ? function lastIndexOf(searchE
   var O = toIndexedObject(this);
   var length = toLength(O.length);
   var index = length - 1;
-  if (arguments.length > 1) index = Math.min(index, toInteger(arguments[1]));
+  if (arguments.length > 1) index = min(index, toInteger(arguments[1]));
   if (index < 0) index = length + index;
-  for (;index >= 0; index--) if (index in O) if (O[index] === searchElement) return index || 0;
+  for (;index >= 0; index--) if (index in O && O[index] === searchElement) return index || 0;
   return -1;
 } : nativeLastIndexOf;
 
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports) {
 
 module.exports = window.PubSub;
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45);
+/* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
 /* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_define_property__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(60);
+/* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(62);
 /* harmony import */ var core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_keys__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(62);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(64);
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_3__);
 
 
@@ -1357,10 +1443,11 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-//--------------------------------------------------------
-//-- Vow
-//--------------------------------------------------------
-var RSVP = __webpack_require__(64); //-- Private
+/**
+ * Name-based Promises that can be referenced anytime
+ * @module pinki/message
+ */
+var RSVP = __webpack_require__(66); //-- Private
 
 
 var vows = {};
@@ -1374,6 +1461,8 @@ var getDeferredVow = function getDeferredVow(name) {
 
   return vows[name];
 };
+/** Vow entry point */
+
 
 var Vow =
 /*#__PURE__*/
@@ -1384,25 +1473,42 @@ function () {
 
   _createClass(Vow, [{
     key: "when",
-    //-- When all vows are fulfilled or broke
-    value: function when() {
-      var promises = []; // Group all vows Promises
 
-      for (var _len = arguments.length, names = new Array(_len), _key = 0; _key < _len; _key++) {
-        names[_key] = arguments[_key];
+    /**
+     * When a or all vows are fulfilled or broke
+     * @param {string|string[]} names - Vow name or array of vow names
+     * @return {promise} Vow's promise or Promise.all() of all vow's promises
+     */
+    value: function when(names) {
+      if (typeof names === 'string') {
+        return getDeferredVow(names).promise;
+      } else if (Array.isArray(names)) {
+        var promises = []; // Group all vows Promises
+
+        names.forEach(function (vow) {
+          promises.push(getDeferredVow(vow).promise);
+        });
+        return RSVP.all(promises);
       }
 
-      names.forEach(function (vow) {
-        promises.push(getDeferredVow(vow).promise);
-      });
-      return RSVP.all(promises);
-    } //-- Fulfill a vow
+      throw new TypeError('Argument must be a String or an Array');
+    }
+    /**
+     * Resolve the underlying Promise
+     * @param {string} name - Vow name
+     * @param {*} data - Data to resolve the underlying Promise with
+     */
 
   }, {
     key: "fulfill",
     value: function fulfill(name, data) {
       getDeferredVow(name).resolve(data);
-    } //-- Break a vow
+    }
+    /**
+     * Reject the underlying Promise
+     * @param {string} name - Vow name
+     * @param {string} error - Error message to reject the underlying Promise with
+     */
 
   }, {
     key: "break",
@@ -1411,7 +1517,12 @@ function () {
     }
   }, {
     key: "list",
-    //-- Get all registered vow names
+
+    /**
+     * Vows than have been registered.
+     * @readonly
+     * @property {string[]} list - List of vows.
+    	 */
     get: function get() {
       return Object.keys(vows);
     }
@@ -1423,12 +1534,12 @@ function () {
 /* harmony default export */ __webpack_exports__["default"] = (new Vow());
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $ = __webpack_require__(3);
-var toObject = __webpack_require__(50);
-var nativeKeys = __webpack_require__(61);
+var toObject = __webpack_require__(52);
+var nativeKeys = __webpack_require__(63);
 var fails = __webpack_require__(8);
 
 var FAILS_ON_PRIMITIVES = fails(function () { nativeKeys(1); });
@@ -1443,25 +1554,26 @@ $({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES }, {
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var internalObjectKeys = __webpack_require__(36);
-var enumBugKeys = __webpack_require__(41);
+var internalObjectKeys = __webpack_require__(38);
+var enumBugKeys = __webpack_require__(43);
 
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+// `Object.keys` method
+// https://tc39.github.io/ecma262/#sec-object.keys
 module.exports = Object.keys || function keys(O) {
   return internalObjectKeys(O, enumBugKeys);
 };
 
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(4);
-var DOMIterables = __webpack_require__(63);
-var forEach = __webpack_require__(46);
+var DOMIterables = __webpack_require__(65);
+var forEach = __webpack_require__(48);
 var hide = __webpack_require__(20);
 
 for (var COLLECTION_NAME in DOMIterables) {
@@ -1477,7 +1589,7 @@ for (var COLLECTION_NAME in DOMIterables) {
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports) {
 
 // iterable DOM collections
@@ -1518,7 +1630,7 @@ module.exports = {
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports) {
 
 module.exports = window.RSVP;

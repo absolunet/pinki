@@ -107,20 +107,32 @@ module.exports = __webpack_require__(1).default;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_message__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _lib_vow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
-//--------------------------------------------------------
-//-- pinki
-//--------------------------------------------------------
+/**
+ * Asynchronous libraries wrapper
+ * @module pinki
+ */
 
 
 
 
 
+/** Main entry point */
 class Pinki {
 
+	/**
+	 * Message
+	 * @readonly
+	 * @property {object} message
+	 */
 	get message() {
 		return _lib_message__WEBPACK_IMPORTED_MODULE_0__["default"];
 	}
 
+	/**
+	 * Vow
+	 * @readonly
+	 * @property {object} vow
+	 */
 	get vow() {
 		return _lib_vow__WEBPACK_IMPORTED_MODULE_1__["default"];
 	}
@@ -137,9 +149,10 @@ class Pinki {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//--------------------------------------------------------
-//-- Message
-//--------------------------------------------------------
+/**
+ * PubSubJS wrapper with goodies
+ * @module pinki/message
+ */
 
 const PubSub = __webpack_require__(3);
 
@@ -167,9 +180,17 @@ const messageHasSubscribers = (topic, messageTopic) => {
 
 
 
+/** Message entry point */
 class Message {
 
-	//-- Subscribe to a topic
+	/**
+	 * Subscribe to a topic
+	 * @param {string} topic - Topic id.
+	 * @param {function} subscriber - The callback to execute.
+	 * @param {object} [options] - Options
+	 * @param {boolean} [options.executePrevious=true] - Execute previously published messages.
+	 * @return {string} Unique token
+	 */
 	subscribe(topic, subscriber, { executePrevious = true } = {})   {
 		if (executePrevious) {
 			messages.forEach(({ topic: messageTopic, data: messageData }) => {
@@ -183,7 +204,12 @@ class Message {
 	}
 
 
-	//-- Publish a message
+	/**
+	 * Publish a message
+	 * @param {string} topic - Topic id.
+	 * @param {*} [data] - The data.
+	 * @return {boolean} Were they any subscribers already?
+	 */
 	publish(topic, data) {
 		messages.push({ topic, data });
 
@@ -191,13 +217,23 @@ class Message {
 	}
 
 
-	//-- Unsubscribe to all topic
-	get unsubscribe() {
-		return PubSub.unsubscribe;
+	/**
+	 * Unsubscribe
+	 * @param {string|function} value - A token, function or topic to unsubscribe from
+	 * @return {boolean} Were they any subscribers?
+	 */
+	unsubscribe(value) {
+		return PubSub.unsubscribe(value);
 	}
 
 
-	//-- Get all published messages
+	/**
+	 * Get all published messages
+	 * @readonly
+	 * @property {object[]} list
+	 * @property {string} list[].topic - Topic id.
+	 * @property {*} list[].data - Given data.
+ 	 */
 	get list() {
 		return messages;
 	}
@@ -220,9 +256,10 @@ module.exports = require("pubsub-js");
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//--------------------------------------------------------
-//-- Vow
-//--------------------------------------------------------
+/**
+ * Name-based Promises that can be referenced anytime
+ * @module pinki/message
+ */
 
 const RSVP = __webpack_require__(5);
 
@@ -247,33 +284,57 @@ const getDeferredVow = (name) => {
 
 
 
+/** Vow entry point */
 class Vow {
 
-	//-- Get all registered vow names
+	/**
+	 * Vows than have been registered.
+	 * @readonly
+	 * @property {string[]} list - List of vows.
+ 	 */
 	get list() {
 		return Object.keys(vows);
 	}
 
 
-	//-- When all vows are fulfilled or broke
-	when(...names) {
-		const promises = [];
+	/**
+	 * When a or all vows are fulfilled or broke
+	 * @param {string|string[]} names - Vow name or array of vow names
+	 * @return {promise} Vow's promise or Promise.all() of all vow's promises
+	 */
+	when(names) {
+		if (typeof names === 'string') {
+			return getDeferredVow(names).promise;
 
-		// Group all vows Promises
-		names.forEach((vow) => {
-			promises.push(getDeferredVow(vow).promise);
-		});
+		} else if (Array.isArray(names)) {
+			const promises = [];
 
-		return RSVP.all(promises);
+			// Group all vows Promises
+			names.forEach((vow) => {
+				promises.push(getDeferredVow(vow).promise);
+			});
+
+			return RSVP.all(promises);
+		}
+
+		throw new TypeError('Argument must be a String or an Array');
 	}
 
 
-	//-- Fulfill a vow
+	/**
+	 * Resolve the underlying Promise
+	 * @param {string} name - Vow name
+	 * @param {*} data - Data to resolve the underlying Promise with
+	 */
 	fulfill(name, data) {
 		getDeferredVow(name).resolve(data);
 	}
 
-	//-- Break a vow
+	/**
+	 * Reject the underlying Promise
+	 * @param {string} name - Vow name
+	 * @param {string} error - Error message to reject the underlying Promise with
+	 */
 	break(name, error) {
 		getDeferredVow(name).reject(error);
 	}

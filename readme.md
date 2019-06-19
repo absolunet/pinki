@@ -58,9 +58,15 @@ setTimeout(() => {
 
 pinki.vow.fulfill('gamma', 'Yeah!');
 
-pinki.vow.when('gamma', 'delta').then(([dataA, dataB]) => {
-	console.log(dataA, dataB);
+
+pinki.vow.when('gamma').then((data) => {
+	console.log(data);
 });
+
+pinki.vow.when(['gamma', 'delta']).then(([dataC, dataD]) => {
+	console.log(dataC, dataD);
+});
+
 
 setTimeout(() => {
 	pinki.vow.fulfill('delta', 'Yessir!');
@@ -68,6 +74,7 @@ setTimeout(() => {
 
 
 // Outputs:
+// 'Yeah!'
 // { gamma:'Yeah!', delta:'Yessir!' }
 ```
 
@@ -100,16 +107,43 @@ Maps [`PubSub.unsubscribe`](https://github.com/jprichardson/node-fs-extra/blob/m
 **Vows** are name-based Promises that can be referenced anytime.
 
 ### vow.list
-Array of vow names than have been registered by one of the methods.
+Vows than have been registered.
 
-### vow.when(name1 *[, name2, nameN...]*)
-Returns a [`RSVP.all`](https://github.com/tildeio/rsvp.js/#arrays-of-promises) Promise which reacts when all vows are fulfilled or one is broken.
+### vow.when(names)
+Returns a Promise if one vow given or a [`RSVP.all`](https://github.com/tildeio/rsvp.js/#arrays-of-promises) Promise which reacts when all vows are fulfilled or one is broken if multiple vows are given.
+
+#### names
+Type: `String` or `Array`<br>
+One or multiple vow names
+
+
 
 ### vow.fulfill(name, data)
-Resolves the underlying Promise.
+Resolve the underlying Promise.
+
+#### name
+Type: `String`<br>
+Vow name
+
+#### data
+Type: `<any>`<br>
+Data to resolve the underlying Promise with
+
+
 
 ### vow.break(name, error)
-Rejects the underlying Promise.
+Reject the underlying Promise.
+
+#### name
+Type: `String`<br>
+Vow name
+
+#### error
+Type: `String`<br>
+Error message to reject the underlying Promise with
+
+
+
 
 
 
